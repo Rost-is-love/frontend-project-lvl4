@@ -1,17 +1,11 @@
-// @ts-check
-
 import buildApp from '../server/index.js';
 
 const buildUrl = (url) => `/api/v1/${url}`;
 
 test('get /channels/:id/messages', async () => {
   const state = {
-    channels: [
-      { id: 100, name: 'custom', removable: true },
-    ],
-    messages: [
-      { id: 1, channelId: 100, body: 'hey custom' },
-    ],
+    channels: [{ id: 100, name: 'custom', removable: true }],
+    messages: [{ id: 1, channelId: 100, body: 'hey custom' }],
   };
   const app = buildApp({ state });
   const response = await app.inject({
@@ -24,7 +18,9 @@ test('get /channels/:id/messages', async () => {
       type: 'messages',
       id: expect.any(Number),
       attributes: {
-        id: expect.any(Number), channelId: 100, body: 'hey custom',
+        id: expect.any(Number),
+        channelId: 100,
+        body: 'hey custom',
       },
     },
   ];
@@ -37,12 +33,8 @@ test('get /channels/:id/messages', async () => {
 
 test('post /channels/:id/messages', async () => {
   const state = {
-    channels: [
-      { id: 100, name: 'custom', removable: true },
-    ],
-    messages: [
-      { id: 1, channeldId: 100, body: 'hey custom' },
-    ],
+    channels: [{ id: 100, name: 'custom', removable: true }],
+    messages: [{ id: 1, channeldId: 100, body: 'hey custom' }],
   };
 
   const app = buildApp({ state });
