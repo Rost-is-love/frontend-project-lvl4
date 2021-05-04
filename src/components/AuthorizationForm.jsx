@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
+import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import * as actions from '../actions/index.js';
 
@@ -17,39 +18,49 @@ const actionCreators = {
 const AuthorizationForm = () => {
   const { t } = useTranslation();
 
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+
   return (
     <div className="container-fluid">
       <div className="row justify-content-center pt-5">
         <div className="col-sm-4">
-          <form className="p-3">
+          <form className="p-3" onSubmit={formik.handleSubmit}>
             <div className="form-group">
               <label className="form-label" htmlFor="username">
                 {t('nickname')}
               </label>
-              <Field
+              <input
+                onChange={formik.handleChange}
+                value={formik.values.username}
                 name="username"
                 required
-                component="input"
                 type="text"
                 autoComplete="username"
                 id="username"
                 className="form-control"
-                value=""
               />
             </div>
             <div className="form-group">
               <label className="form-label" htmlFor="password">
                 {t('password')}
               </label>
-              <Field
+              <input
+                onChange={formik.handleChange}
+                value={formik.values.password}
                 required
-                component="input"
                 name="password"
                 autoComplete="current-password"
                 type="password"
                 id="password"
                 className="form-control"
-                value=""
               />
               <div className="invalid-feedback">{t('wrongData')}</div>
             </div>
