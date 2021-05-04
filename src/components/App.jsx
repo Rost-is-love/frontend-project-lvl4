@@ -10,6 +10,7 @@ import React from 'react';
 
 import AuthorizationForm from './AuthorizationForm.jsx';
 import RegistrationForm from './RegistrationForm.jsx';
+import NotFoundPage from './404.jsx';
 
 const PrivateRoute = ({ path }) => (
   <Route
@@ -32,6 +33,9 @@ const App = () => (
         </Route>
         <Route path="/signup">
           <RegistrationForm />
+        </Route>
+        <Route path="*">
+          <NotFoundPage />
         </Route>
         <PrivateRoute path="/" exact>
           <div>chat</div>
