@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
+import { Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import * as actions from '../actions/index.js';
@@ -17,6 +18,10 @@ const actionCreators = {
 
 const AuthorizationForm = () => {
   const { t } = useTranslation();
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -32,12 +37,10 @@ const AuthorizationForm = () => {
     <div className="container-fluid">
       <div className="row justify-content-center pt-5">
         <div className="col-sm-4">
-          <form className="p-3" onSubmit={formik.handleSubmit}>
-            <div className="form-group">
-              <label className="form-label" htmlFor="username">
-                {t('nickname')}
-              </label>
-              <input
+          <Form className="p-3" onSubmit={formik.handleSubmit}>
+            <Form.Group>
+              <Form.Label htmlFor="username">{t('nickname')}</Form.Label>
+              <Form.Control
                 onChange={formik.handleChange}
                 value={formik.values.username}
                 name="username"
@@ -45,14 +48,12 @@ const AuthorizationForm = () => {
                 type="text"
                 autoComplete="username"
                 id="username"
-                className="form-control"
+                ref={inputRef}
               />
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="password">
-                {t('password')}
-              </label>
-              <input
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="password">{t('password')}</Form.Label>
+              <Form.Control
                 onChange={formik.handleChange}
                 value={formik.values.password}
                 required
@@ -60,18 +61,17 @@ const AuthorizationForm = () => {
                 autoComplete="current-password"
                 type="password"
                 id="password"
-                className="form-control"
               />
               <div className="invalid-feedback">{t('wrongData')}</div>
-            </div>
-            <button type="submit" className="w-100 mb-3 btn btn-outline-primary">
+            </Form.Group>
+            <Button type="submit" variant="outline-primary" className="w-100 mb-3">
               Войти
-            </button>
+            </Button>
             <div className="d-flex flex-column align-items-center">
               <span className="small mb-2">{t('noAccount')}</span>
               <Link to="/signup">{t('registration')}</Link>
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </div>
