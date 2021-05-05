@@ -1,11 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import * as actions from '../actions/index.js';
+import routes from '../routes.js';
+import useAuth from '../hooks/index.jsx';
 
 const mapStateToProps = () => {
   const props = {};
@@ -18,7 +21,11 @@ const actionCreators = {
 
 const AuthorizationForm = () => {
   const { t } = useTranslation();
+  const auth = useAuth();
+  const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
+  const location = useLocation();
+  const history = useHistory();
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -28,8 +35,26 @@ const AuthorizationForm = () => {
       username: '',
       password: '',
     },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      setAuthFailed(false);
+
+      try {
+        const res = await axios.post(routes.loginPath(), values);
+        console.log(res, '1');
+        localStorage.setItem('userId', JSON.stringify(res.data));
+        console.log(auth, localStorage);
+        auth.logIn();
+        const { from } = location.state || { from: { pathname: '/' } };
+        history.replace(from);
+      } catch (err) {
+        console.log(err, '2');
+        if (err.isAxiosError && err.response.status === 401) {
+          setAuthFailed(true);
+          inputRef.current.select();
+          return;
+        }
+        throw err;
+      }
     },
   });
 
@@ -46,6 +71,7 @@ const AuthorizationForm = () => {
                 name="username"
                 required
                 type="text"
+                isInvalid={authFailed}
                 autoComplete="username"
                 id="username"
                 ref={inputRef}
@@ -58,6 +84,7 @@ const AuthorizationForm = () => {
                 value={formik.values.password}
                 required
                 name="password"
+                isInvalid={authFailed}
                 autoComplete="current-password"
                 type="password"
                 id="password"
