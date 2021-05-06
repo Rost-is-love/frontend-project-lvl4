@@ -1,17 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
 import { useTranslation } from 'react-i18next';
-import * as actions from '../actions/index.js';
-
-const mapStateToProps = () => {
-  const props = {};
-  return props;
-};
-
-const actionCreators = {
-  addTask: actions.addTask,
-};
 
 const RegistrationForm = () => {
   const { t } = useTranslation();
@@ -25,7 +13,7 @@ const RegistrationForm = () => {
               <label className="form-label" htmlFor="username">
                 {t('nickname')}
               </label>
-              <Field
+              <input
                 placeholder="От 3 до 20 символов"
                 name="username"
                 component="input"
@@ -41,7 +29,7 @@ const RegistrationForm = () => {
               <label className="form-label" htmlFor="password">
                 {t('password')}
               </label>
-              <Field
+              <input
                 component="input"
                 placeholder="Не менее 6 символов"
                 name="password"
@@ -58,7 +46,7 @@ const RegistrationForm = () => {
               <label className="form-label" htmlFor="confirmPassword">
                 {t('confirmPassword')}
               </label>
-              <Field
+              <input
                 component="input"
                 placeholder="Пароли должны совпадать"
                 name="confirmPassword"
@@ -81,8 +69,4 @@ const RegistrationForm = () => {
   );
 };
 
-const ConnectedNewTaskForm = connect(mapStateToProps, actionCreators)(RegistrationForm);
-
-export default reduxForm({
-  form: 'newTask',
-})(ConnectedNewTaskForm);
+export default RegistrationForm;

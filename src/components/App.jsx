@@ -7,7 +7,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import { Navbar } from 'react-bootstrap';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import AuthorizationForm from './AuthorizationForm.jsx';
 import RegistrationForm from './RegistrationForm.jsx';
@@ -48,7 +48,7 @@ const App = () => (
   <AuthProvider>
     <Router>
       <div className="d-flex flex-column h-100">
-        <Navbar bg="light" expand="lg">
+        <Navbar bg="light" expand="lg" className="mb-3">
           <Navbar.Brand as={Link} to="/">
             Hexlet Chat
           </Navbar.Brand>
@@ -60,9 +60,9 @@ const App = () => (
           <Route path="/signup">
             <RegistrationForm />
           </Route>
-          <Route path="*" exact>
+          {/* <Route path="*" exact>
             <NotFoundPage />
-          </Route>
+          </Route> */}
           <PrivateRoute path="/">
             <ChatPage />
           </PrivateRoute>
