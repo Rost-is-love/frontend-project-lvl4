@@ -14,6 +14,8 @@ export default {
       matchingPasswords: 'Отправить',
       noAccount: 'Нет аккаунта',
       requiredField: 'Обязательное поле',
+      send: 'Отправить',
+      channels: 'Каналы',
     },
   },
 };

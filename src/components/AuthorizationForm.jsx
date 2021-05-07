@@ -5,7 +5,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import routes from '../routes.js';
-import useAuth from '../hooks/index.jsx';
+import useAuth from '../hooks/useAuth.jsx';
 
 const AuthorizationForm = () => {
   const { t } = useTranslation();
@@ -28,7 +28,8 @@ const AuthorizationForm = () => {
 
       try {
         const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify(res.data));
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('username', res.data.username);
         auth.logIn();
         const { from } = location.state || { from: { pathname: '/' } };
         history.replace(from);

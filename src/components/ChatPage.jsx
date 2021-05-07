@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Channels from './channels/Channels.jsx';
+import Messages from './messages/Messages.jsx';
 import routes from '../routes.js';
 import { initChannels } from './channels/channelsSlice.js';
 
@@ -30,21 +31,7 @@ const ChatPage = () => {
     <div className="row flex-grow-1 h-75 pb-3">
       <Channels />
       <div className="col h-100">
-        <div className="d-flex flex-column h-100">
-          <div id="messages-box" className="chat-messages overflow-auto mb-3" />
-          <div className="mt-auto">
-            <form noValidate="" className="">
-              <div className="input-group">
-                <input name="body" aria-label="body" className="form-control" value="" />
-                <div className="input-group-append">
-                  <button type="submit" className="btn btn-primary">
-                    Отправить
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
+        <Messages />
       </div>
     </div>
   );

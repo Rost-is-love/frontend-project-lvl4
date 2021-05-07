@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const channelsSlice = createSlice({
-  name: 'channels',
+  name: 'channelsData',
   initialState: {
     channels: [],
     currentChannelId: 1,
@@ -12,7 +12,6 @@ const channelsSlice = createSlice({
       const { channels, currentChannelId } = data;
       state.channels = channels;
       state.currentChannelId = currentChannelId;
-      return state;
     },
     addChannel: (state, { payload: { channel } }) => {
       state.channels.push(channel);

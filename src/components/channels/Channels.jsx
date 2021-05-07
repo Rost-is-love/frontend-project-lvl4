@@ -1,16 +1,18 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Nav, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 const Channels = () => {
-  const channels = useSelector((state) => state.channels.channels);
-  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
+  const { t } = useTranslation();
+  const channels = useSelector((state) => state.channelsData.channels);
+  const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
   const dispatch = useDispatch();
 
   return (
     <div className="col-3 border-right">
       <div className="d-flex mb-2">
-        <span>Каналы</span>
+        <span>{t('channels')}</span>
         <Button variant="link" className="ml-auto p-0">
           +
         </Button>

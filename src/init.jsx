@@ -6,18 +6,26 @@ import { initReactI18next } from 'react-i18next';
 import App from './components/App.jsx';
 import createStore from './store.js';
 import resources from './locales/ru.js';
+import { addMessage } from './components/messages/messagesSlice.js';
+import SocketContext from './contexts/socketContext.jsx';
 
-export default () => {
+export default async (socket) => {
+  const store = createStore();
+
   i18n.use(initReactI18next).init({
     resources,
     lng: 'ru',
   });
 
-  const store = createStore();
+  socket.on('newMessage', (message) => {
+    store.dispatch(addMessage({ message }));
+  });
 
   return (
     <Provider store={store}>
-      <App />
+      <SocketContext.Provider value={socket}>
+        <App />
+      </SocketContext.Provider>
     </Provider>
   );
 };

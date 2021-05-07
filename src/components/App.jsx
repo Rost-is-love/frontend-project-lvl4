@@ -13,8 +13,8 @@ import AuthorizationForm from './AuthorizationForm.jsx';
 import RegistrationForm from './RegistrationForm.jsx';
 import ChatPage from './ChatPage.jsx';
 import NotFoundPage from './404.jsx';
-import authContext from '../contexts/index.jsx';
-import useAuth from '../hooks/index.jsx';
+import authContext from '../contexts/authContext.jsx';
+import useAuth from '../hooks/useAuth.jsx';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
