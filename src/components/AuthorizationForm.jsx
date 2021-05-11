@@ -78,7 +78,7 @@ const AuthorizationForm = () => {
               <div className="invalid-feedback">{t('wrongData')}</div>
             </Form.Group>
             <Button type="submit" variant="outline-primary" className="w-100 mb-3">
-              Войти
+              {t('enter')}
             </Button>
             <div className="d-flex flex-column align-items-center">
               <span className="small mb-2">{t('noAccount')}</span>

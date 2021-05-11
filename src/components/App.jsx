@@ -12,7 +12,8 @@ import React, { useState } from 'react';
 import AuthorizationForm from './AuthorizationForm.jsx';
 import RegistrationForm from './RegistrationForm.jsx';
 import ChatPage from './ChatPage.jsx';
-import NotFoundPage from './404.jsx';
+import Modals from './modals/Modals.jsx';
+// import NotFoundPage from './404.jsx';
 import authContext from '../contexts/authContext.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 
@@ -68,6 +69,7 @@ const App = () => (
           </PrivateRoute>
         </Switch>
       </div>
+      <Modals />
     </Router>
   </AuthProvider>
 );

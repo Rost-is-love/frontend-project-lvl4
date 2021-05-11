@@ -1,6 +1,5 @@
 import React from 'react';
-// import io from 'socket.io-client';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
@@ -35,7 +34,6 @@ const Messages = () => {
       } catch (error) {
         console.log(error);
       }
-      console.log(body);
     },
   });
 
