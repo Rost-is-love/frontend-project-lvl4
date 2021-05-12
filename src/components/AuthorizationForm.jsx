@@ -75,7 +75,7 @@ const AuthorizationForm = () => {
                 type="password"
                 id="password"
               />
-              <div className="invalid-feedback">{t('wrongData')}</div>
+              <Form.Control.Feedback type="invalid">{t('wrongData')}</Form.Control.Feedback>
             </Form.Group>
             <Button type="submit" variant="outline-primary" className="w-100 mb-3">
               {t('enter')}

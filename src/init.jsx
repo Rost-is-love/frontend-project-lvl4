@@ -1,5 +1,6 @@
 import React from 'react';
 import i18n from 'i18next';
+import * as yup from 'yup';
 import { Provider } from 'react-redux';
 import { initReactI18next } from 'react-i18next';
 
@@ -9,6 +10,7 @@ import resources from './locales/ru.js';
 import { addMessage } from './components/messages/messagesSlice.js';
 import { addChannel, removeChannel, renameChannel } from './components/channels/channelsSlice.js';
 import SocketContext from './contexts/socketContext.jsx';
+import yupDictionary from './locales/yup.js';
 
 export default async (socket) => {
   const store = createStore();
@@ -17,6 +19,7 @@ export default async (socket) => {
     resources,
     lng: 'ru',
   });
+  yup.setLocale(yupDictionary);
 
   socket.on('newMessage', (message) => {
     store.dispatch(addMessage({ message }));

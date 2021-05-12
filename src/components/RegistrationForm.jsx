@@ -1,68 +1,127 @@
-import React from 'react';
+import axios from 'axios';
+import * as yup from 'yup';
+import React, { useEffect, useRef, useState } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
+import { Button, Form } from 'react-bootstrap';
+import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import routes from '../routes.js';
+import useAuth from '../hooks/useAuth.jsx';
 
 const RegistrationForm = () => {
   const { t } = useTranslation();
+  const auth = useAuth();
+  const [isValidData, setIsValidData] = useState(true);
+  const inputRef = useRef();
+  const location = useLocation();
+  const history = useHistory();
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
+  const SignupSchema = yup.object().shape({
+    username: yup.string().min(3).max(20).required(),
+    password: yup.string().min(6, 'minPasswordLength').required(),
+    confirmPassword: yup
+      .string()
+      .oneOf([yup.ref('password')])
+      .required(),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+      confirmPassword: '',
+    },
+    validationSchema: SignupSchema,
+    onSubmit: async (values) => {
+      try {
+        const res = await axios.post(routes.signupPath(), values);
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('username', res.data.username);
+        auth.logIn();
+        const { from } = location.state || { from: { pathname: '/' } };
+        history.replace(from);
+      } catch (err) {
+        if (err.isAxiosError || err.response.status === 409) {
+          setIsValidData(false);
+          inputRef.current.select();
+          return;
+        }
+        throw err;
+      }
+    },
+  });
 
   return (
     <div className="container-fluid">
       <div className="row justify-content-center pt-5">
         <div className="col-sm-4">
-          <form className="p-3">
-            <div className="form-group">
-              <label className="form-label" htmlFor="username">
-                {t('nickname')}
-              </label>
-              <input
-                placeholder="От 3 до 20 символов"
+          <Form className="p-3" onSubmit={formik.handleSubmit}>
+            <Form.Group>
+              <Form.Label className="form-label" htmlFor="username">
+                {t('username')}
+              </Form.Label>
+              <Form.Control
+                onChange={formik.handleChange}
+                value={formik.values.username}
+                placeholder={t('usernameLength')}
                 name="username"
-                component="input"
                 autoComplete="username"
                 required
                 id="username"
-                className="form-control"
-                value=""
+                isInvalid={(formik.errors.username && formik.touched.username) || !isValidData}
+                ref={inputRef}
               />
-              <div className="invalid-feedback">{t('requiredField')}</div>
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="password">
+              <Form.Control.Feedback type="invalid">
+                {t(formik.errors.username)}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className="form-label" htmlFor="password">
                 {t('password')}
-              </label>
-              <input
-                component="input"
-                placeholder="Не менее 6 символов"
+              </Form.Label>
+              <Form.Control
+                onChange={formik.handleChange}
+                value={formik.values.upassword}
+                placeholder={t('minPasswordLength')}
                 name="password"
                 required
                 autoComplete="new-password"
                 type="password"
                 id="password"
-                className="form-control"
-                value=""
+                isInvalid={(formik.errors.password && formik.touched.password) || !isValidData}
               />
-              <div className="invalid-feedback">{t('requiredField')}</div>
-            </div>
-            <div className="form-group">
-              <label className="form-label" htmlFor="confirmPassword">
+              <Form.Control.Feedback type="invalid">
+                {t(formik.errors.password)}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label className="form-label" htmlFor="confirmPassword">
                 {t('confirmPassword')}
-              </label>
-              <input
-                component="input"
-                placeholder="Пароли должны совпадать"
+              </Form.Label>
+              <Form.Control
+                onChange={formik.handleChange}
+                value={formik.values.confirmPassword}
+                placeholder={t('matchingPasswords')}
                 name="confirmPassword"
                 required
                 autoComplete="new-password"
                 type="password"
                 id="confirmPassword"
-                className="form-control"
-                value=""
+                isInvalid={
+                  (formik.errors.confirmPassword && formik.touched.confirmPassword) || !isValidData
+                }
               />
-              <div className="invalid-feedback" />
-            </div>
-            <button type="submit" className="w-100 btn btn-outline-primary">
+              <Form.Control.Feedback type="invalid">
+                {isValidData ? t(formik.errors.confirmPassword) : t('userAlreadyExists')}
+              </Form.Control.Feedback>
+            </Form.Group>
+            <Button type="submit" variant="outline-primary" className="w-100">
               {t('signup')}
-            </button>
-          </form>
+            </Button>
+          </Form>
         </div>
       </div>
     </div>
