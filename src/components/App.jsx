@@ -6,8 +6,9 @@ import {
   Link,
   Redirect,
 } from 'react-router-dom';
-import { Navbar } from 'react-bootstrap';
-import React, { useState } from 'react';
+import { Navbar, Button } from 'react-bootstrap';
+import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import AuthorizationForm from './AuthorizationForm.jsx';
 import RegistrationForm from './RegistrationForm.jsx';
@@ -45,14 +46,22 @@ const PrivateRoute = ({ children, path }) => {
   );
 };
 
+const AuthButton = () => {
+  const { t } = useTranslation();
+  const auth = useContext(authContext);
+
+  return auth.loggedIn ? <Button onClick={auth.logOut}>{t('logout')}</Button> : null;
+};
+
 const App = () => (
   <AuthProvider>
     <Router>
       <div className="d-flex flex-column h-100">
         <Navbar bg="light" expand="lg" className="mb-3">
-          <Navbar.Brand as={Link} to="/">
+          <Navbar.Brand as={Link} to="/" className="mr-auto">
             Hexlet Chat
           </Navbar.Brand>
+          <AuthButton />
         </Navbar>
         <Switch>
           <Route path="/login">
