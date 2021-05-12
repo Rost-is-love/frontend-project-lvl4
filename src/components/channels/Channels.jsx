@@ -52,7 +52,6 @@ const Channels = () => {
   const dispatch = useDispatch();
   // prettier-ignore
   const openModal = (type, channelId = null) => () => {
-    console.log(channelId, 'чекаю ченннеел ай ди');
     dispatch(showModal({ type, channelId }));
   };
 
