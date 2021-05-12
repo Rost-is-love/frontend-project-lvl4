@@ -17,7 +17,6 @@ const Remove = () => {
   };
 
   const removeChannel = (id) => () => {
-    console.log(id, 'внутри компонента ремув');
     try {
       socket.emit('removeChannel', { id }, (response) => {
         console.log(response);
