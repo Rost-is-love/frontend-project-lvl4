@@ -28,9 +28,8 @@ const AuthorizationForm = () => {
 
       try {
         const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('username', res.data.username);
-        auth.logIn();
+        const { token, username } = res.data;
+        auth.logIn(token, username);
         const { from } = location.state || { from: { pathname: '/' } };
         history.replace(from);
       } catch (err) {

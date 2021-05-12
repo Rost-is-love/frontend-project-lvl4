@@ -7,10 +7,10 @@ import routes from '../routes.js';
 import { initChannels } from './channels/channelsSlice.js';
 
 const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
+  const token = localStorage.getItem('token');
 
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
+  if (token) {
+    return { Authorization: `Bearer ${token}` };
   }
 
   return {};
@@ -20,7 +20,9 @@ const ChatPage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchContent = async () => {
-      const { data } = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
+      const response = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
+      const { data } = response;
+
       dispatch(initChannels({ data }));
     };
 

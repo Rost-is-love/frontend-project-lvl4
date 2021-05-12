@@ -9,6 +9,7 @@ import {
 import { Navbar, Button } from 'react-bootstrap';
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { has } from 'lodash';
 
 import AuthorizationForm from './AuthorizationForm.jsx';
 import RegistrationForm from './RegistrationForm.jsx';
@@ -19,9 +20,15 @@ import authContext from '../contexts/authContext.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const isLoggedIn = has(localStorage, 'token');
+  const [loggedIn, setLoggedIn] = useState(isLoggedIn);
 
-  const logIn = () => setLoggedIn(true);
+  const logIn = (token, username) => {
+    localStorage.setItem('token', token);
+    localStorage.setItem('username', username);
+    setLoggedIn(true);
+  };
+
   const logOut = () => {
     localStorage.removeItem('userId');
     setLoggedIn(false);
@@ -55,8 +62,8 @@ const AuthButton = () => {
 
 const App = () => (
   <AuthProvider>
-    <Router>
-      <div className="d-flex flex-column h-100">
+    <div className="d-flex flex-column h-100">
+      <Router>
         <Navbar bg="light" expand="lg" className="mb-3">
           <Navbar.Brand as={Link} to="/" className="mr-auto">
             Hexlet Chat
@@ -73,13 +80,13 @@ const App = () => (
           {/* <Route path="*" exact>
             <NotFoundPage />
           </Route> */}
-          <PrivateRoute path="/">
+          <PrivateRoute path="/" exact>
             <ChatPage />
           </PrivateRoute>
         </Switch>
-      </div>
-      <Modals />
-    </Router>
+      </Router>
+    </div>
+    <Modals />
   </AuthProvider>
 );
 
