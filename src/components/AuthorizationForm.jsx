@@ -27,18 +27,18 @@ const AuthorizationForm = () => {
       setAuthFailed(false);
 
       try {
-        const res = await axios.post(routes.loginPath(), values);
-        const { token, username } = res.data;
+        const response = await axios.post(routes.loginPath(), values);
+        const { token, username } = response.data;
         auth.logIn(token, username);
         const { from } = location.state || { from: { pathname: '/' } };
         history.replace(from);
-      } catch (err) {
-        if (err.isAxiosError && err.response.status === 401) {
+      } catch (error) {
+        if (error.isAxiosError && error.response.status === 401) {
           setAuthFailed(true);
           inputRef.current.select();
           return;
         }
-        throw err;
+        throw error;
       }
     },
   });

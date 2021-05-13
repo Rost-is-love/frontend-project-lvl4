@@ -37,18 +37,18 @@ const RegistrationForm = () => {
     validationSchema: SignupSchema,
     onSubmit: async (values) => {
       try {
-        const res = await axios.post(routes.signupPath(), values);
-        const { token, username } = res.data;
+        const response = await axios.post(routes.signupPath(), values);
+        const { token, username } = response.data;
         auth.logIn(token, username);
         const { from } = location.state || { from: { pathname: '/' } };
         history.replace(from);
-      } catch (err) {
-        if (err.isAxiosError || err.response.status === 409) {
+      } catch (error) {
+        if (error.isAxiosError || error.response.status === 409) {
           setIsValidData(false);
           inputRef.current.select();
           return;
         }
-        throw err;
+        throw error;
       }
     },
   });
