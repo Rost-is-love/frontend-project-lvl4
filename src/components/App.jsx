@@ -39,10 +39,10 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-// prettier-ignore
 const PrivateRoute = ({ children, path }) => {
   const auth = useAuth();
 
+  // prettier-ignore
   return (
     <Route
       path={path}

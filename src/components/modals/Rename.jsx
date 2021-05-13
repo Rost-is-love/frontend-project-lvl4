@@ -20,13 +20,14 @@ const Rename = () => {
   useEffect(() => {
     inputRef.current.focus();
   }, []);
-
+  // prettier-ignore
   const formik = useFormik({
     initialValues: {
       body: name,
     },
     validationSchema: yup.object().shape({
-      body: yup.string().notOneOf(channelsNames).min(3).max(20).required(),
+      body: yup.string().notOneOf(channelsNames).min(3).max(20)
+        .required(),
     }),
     validateOnChange: false,
     onSubmit: ({ body }, { setSubmitting, resetForm }) => {
