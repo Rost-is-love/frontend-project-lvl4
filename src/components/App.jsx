@@ -15,7 +15,7 @@ import AuthorizationForm from './AuthorizationForm.jsx';
 import RegistrationForm from './RegistrationForm.jsx';
 import ChatPage from './ChatPage.jsx';
 import Modals from './modals/Modals.jsx';
-// import NotFoundPage from './404.jsx';
+import NotFoundPage from './404.jsx';
 import authContext from '../contexts/authContext.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 
@@ -77,12 +77,12 @@ const App = () => (
           <Route path="/signup">
             <RegistrationForm />
           </Route>
-          {/* <Route path="*" exact>
-            <NotFoundPage />
-          </Route> */}
           <PrivateRoute path="/" exact>
             <ChatPage />
           </PrivateRoute>
+          <Route path="*">
+            <NotFoundPage />
+          </Route>
         </Switch>
       </Router>
     </div>
