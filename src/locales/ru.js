@@ -25,6 +25,7 @@ export default {
       remove: 'Удалить',
       rename: 'Переименовать',
       sure: 'Уверены?',
+      mustBeUnique: 'Должно быть уникальным',
     },
   },
 };
