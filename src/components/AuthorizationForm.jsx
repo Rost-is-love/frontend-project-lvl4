@@ -74,7 +74,9 @@ const AuthorizationForm = () => {
                 type="password"
                 id="password"
               />
-              <Form.Control.Feedback type="invalid">{t('wrongData')}</Form.Control.Feedback>
+              {authFailed && (
+                <Form.Control.Feedback type="invalid">{t('wrongData')}</Form.Control.Feedback>
+              )}
             </Form.Group>
             <Button type="submit" variant="outline-primary" className="w-100 mb-3">
               {t('login')}
