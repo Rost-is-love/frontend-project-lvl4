@@ -68,7 +68,7 @@ const Rename = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.body}
-              data-testid="input-body"
+              data-testid="rename-channel"
               name="body"
               isInvalid={!formik.isValid}
             />

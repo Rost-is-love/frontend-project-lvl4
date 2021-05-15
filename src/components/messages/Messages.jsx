@@ -66,6 +66,7 @@ const Messages = () => {
               aria-label="body"
               onChange={formik.handleChange}
               value={formik.values.body}
+              data-testid="new-message"
             />
             <InputGroup.Append>
               <Button type="submit" variant="primary" className="btn">
