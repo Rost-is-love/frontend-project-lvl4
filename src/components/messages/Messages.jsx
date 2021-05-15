@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,10 @@ const Messages = () => {
   const currentChannelMessages = messages.filter(({ channelId }) => channelId === currentChannelId);
   const nickname = localStorage.getItem('username');
   const socket = useSocket();
+  const inputRef = useRef();
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [currentChannelId]);
 
   const formik = useFormik({
     initialValues: {
@@ -31,6 +35,7 @@ const Messages = () => {
           console.log(response);
         });
         resetForm();
+        inputRef.current.focus();
       } catch (error) {
         console.log(error);
       }
@@ -55,6 +60,8 @@ const Messages = () => {
         <Form noValidate onSubmit={formik.handleSubmit}>
           <InputGroup>
             <Form.Control
+              required
+              ref={inputRef}
               name="body"
               aria-label="body"
               onChange={formik.handleChange}
