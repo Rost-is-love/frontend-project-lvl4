@@ -3,11 +3,15 @@ root: true
 
 plugins:
   - functional
+  - react
 
 extends:
   - airbnb
   - 'plugin:functional/external-recommended'
   - 'plugin:functional/recommended'
+  - 'plugin:react/recommended'
+  - 'plugin:react-hooks/recommended'
+  - 'plugin:prettier/recommended'
 
 parser: babel-eslint
 

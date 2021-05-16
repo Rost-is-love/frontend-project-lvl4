@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-// prettier-ignore
+
 const channelsSlice = createSlice({
   name: 'channelsData',
   initialState: {
@@ -22,21 +22,17 @@ const channelsSlice = createSlice({
       state.currentChannelId = 1;
     },
     renameChannel: (state, { payload: { id, name } }) => {
-      state.channels = state.channels
-        .map((channel) => (channel.id === id ? { ...channel, name } : channel));
+      state.channels = state.channels.map((channel) =>
+        channel.id === id ? { ...channel, name } : channel,
+      );
     },
     changeCurrentChannel: (state, { payload: { id } }) => {
       state.currentChannelId = id;
     },
   },
 });
-// prettier-ignore
-export const {
-  initChannels,
-  addChannel,
-  removeChannel,
-  renameChannel,
-  changeCurrentChannel,
-} = channelsSlice.actions;
+
+export const { initChannels, addChannel, removeChannel, renameChannel, changeCurrentChannel } =
+  channelsSlice.actions;
 
 export default channelsSlice.reducer;
