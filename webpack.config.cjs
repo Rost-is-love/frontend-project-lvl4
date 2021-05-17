@@ -1,8 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // @ts-check
-
+const webpack = require('webpack');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const mode = process.env.NODE_ENV || 'development';
 
@@ -22,7 +23,14 @@ module.exports = {
     publicPath: '/assets/',
     historyApiFallback: true,
   },
-  plugins: [new MiniCssExtractPlugin()],
+  plugins: [
+    new MiniCssExtractPlugin(),
+    mode === 'production'
+      ? new webpack.DefinePlugin({
+          'process.env.ROLLBAR_TOKEN': JSON.stringify(process.env.ROLLBAR_TOKEN),
+        })
+      : new Dotenv(),
+  ],
   module: {
     rules: [
       {

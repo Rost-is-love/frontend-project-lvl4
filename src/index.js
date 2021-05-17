@@ -13,7 +13,7 @@ import '../assets/application.scss';
 const runApp = async () => {
   // eslint-disable-next-line
   new Rollbar({
-    accessToken: 'c16a953d79474fec9f3b5f6943378688',
+    accessToken: process.env.ROLLBAR_TOKEN,
     captureUncaught: true,
     captureUnhandledRejections: true,
     enabled: process.env.NODE_ENV === 'production',
