@@ -69,7 +69,7 @@ const Add = () => {
               isInvalid={!formik.isValid}
             />
             <Form.Control.Feedback type="invalid">{t(formik.errors.body)}</Form.Control.Feedback>
-            <div className="d-flex justify-content-end">
+            <div className="mt-2 d-flex justify-content-end">
               <Button type="button" variant="secondary" className="mr-2" onClick={onHide}>
                 {t('cancel')}
               </Button>
