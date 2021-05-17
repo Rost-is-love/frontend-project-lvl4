@@ -16,7 +16,7 @@ build:
 	npm run build
 
 lint:
-	npx eslint . --ext js,jsx
+	npx eslint --ext js,jsx --config .eslintrc.yml .
 
 publish:
 	npm publish
