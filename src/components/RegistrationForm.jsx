@@ -35,6 +35,7 @@ const RegistrationForm = () => {
       confirmPassword: '',
     },
     validationSchema: SignupSchema,
+    validateOnChange: false,
     onSubmit: async (values) => {
       try {
         const response = await axios.post(routes.signupPath(), values);
@@ -64,6 +65,7 @@ const RegistrationForm = () => {
               </Form.Label>
               <Form.Control
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.username}
                 placeholder={t('usernameLength')}
                 name="username"
@@ -83,6 +85,7 @@ const RegistrationForm = () => {
               </Form.Label>
               <Form.Control
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.upassword}
                 placeholder={t('minPasswordLength')}
                 name="password"
@@ -102,6 +105,7 @@ const RegistrationForm = () => {
               </Form.Label>
               <Form.Control
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.confirmPassword}
                 placeholder={t('matchingPasswords')}
                 name="confirmPassword"
