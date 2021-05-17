@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import Rollbar from 'rollbar';
 import { io } from 'socket.io-client';
 
-import App from './init.jsx';
+import init from './init.jsx';
 
 import '../assets/application.scss';
 
@@ -25,7 +25,7 @@ const runApp = async () => {
 
   const chatContainer = document.querySelector('#chat');
   const socket = io();
-  const vdom = await App(socket);
+  const vdom = await init(socket);
 
   ReactDOM.render(vdom, chatContainer);
 };
