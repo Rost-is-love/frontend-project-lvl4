@@ -44,12 +44,17 @@ const RegistrationForm = () => {
         const { from } = location.state || { from: { pathname: '/' } };
         history.replace(from);
       } catch (error) {
+        console.log(error.response.status, error.name, error.isAxiosError, 'tut');
         if (error.isAxiosError || error.response.status === 409) {
           setIsValidData(false);
           inputRef.current.select();
           return;
         }
         throw error;
+        /* setIsValidData(false);
+        inputRef.current.select();
+        console.log(error.name);
+        setErrors(error.name); */
       }
     },
   });

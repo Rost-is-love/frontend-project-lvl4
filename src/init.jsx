@@ -3,6 +3,7 @@ import i18next from 'i18next';
 import * as yup from 'yup';
 import { Provider } from 'react-redux';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
+import getLogger from '../lib/logger.js';
 
 import App from './components/App.jsx';
 import createStore from './store.js';
@@ -14,6 +15,7 @@ import yupDictionary from './locales/yup.js';
 
 export default async (socket) => {
   const store = createStore();
+  const logSocket = getLogger('socket');
 
   const i18n = i18next.createInstance();
   await i18n.use(initReactI18next).init({
@@ -24,6 +26,7 @@ export default async (socket) => {
 
   socket.on('newMessage', (message) => {
     store.dispatch(addMessage({ message }));
+    logSocket('newMessage', message);
   });
 
   socket.on('newChannel', (channel) => {
