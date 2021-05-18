@@ -41,10 +41,11 @@ const Rename = () => {
           throw new Error('networkError');
         }
         socket.emit('renameChannel', channel, (response) => {
-          console.log(response);
+          if (response.status === 'ok') {
+            resetForm();
+            dispatch(hideModal());
+          }
         });
-        resetForm();
-        dispatch(hideModal());
       } catch (error) {
         setErrors({ body: error.message });
         console.log(error);
@@ -74,6 +75,7 @@ const Rename = () => {
               data-testid="rename-channel"
               name="body"
               isInvalid={formik.errors.body}
+              disabled={formik.isSubmitting}
             />
             <Form.Control.Feedback type="invalid">{t(formik.errors.body)}</Form.Control.Feedback>
             <div className="mt-2 d-flex justify-content-end">
