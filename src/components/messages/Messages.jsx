@@ -84,6 +84,7 @@ const Messages = () => {
               value={formik.values.body}
               data-testid="new-message"
               disabled={formik.isSubmitting}
+              isInvalid={!formik.isValid}
             />
             <InputGroup.Append>
               <Button
