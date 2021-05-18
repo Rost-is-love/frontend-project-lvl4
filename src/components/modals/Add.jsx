@@ -27,19 +27,26 @@ const Add = () => {
       body: yup.string().notOneOf(channelsNames).min(3).max(20).required(),
     }),
     validateOnChange: false,
-    onSubmit: ({ body }, { setSubmitting, resetForm }) => {
+    onSubmit: ({ body }, { setSubmitting, resetForm, setErrors }) => {
       setSubmitting(false);
       const channel = {
         name: body,
       };
 
       try {
+        if (socket.disconnected) {
+          throw new Error('networkError');
+        }
         socket.emit('newChannel', channel, (response) => {
           console.log(response);
         });
         resetForm();
         dispatch(hideModal());
       } catch (error) {
+        if (error.message.includes('Network Error')) {
+          setErrors({ name: 'networkError' });
+          return;
+        }
         console.log(error);
       }
     },
@@ -70,10 +77,16 @@ const Add = () => {
             />
             <Form.Control.Feedback type="invalid">{t(formik.errors.body)}</Form.Control.Feedback>
             <div className="mt-2 d-flex justify-content-end">
-              <Button type="button" variant="secondary" className="mr-2" onClick={onHide}>
+              <Button
+                type="button"
+                variant="secondary"
+                className="mr-2"
+                onClick={onHide}
+                disabled={formik.isSubmitting}
+              >
                 {t('cancel')}
               </Button>
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="primary" disabled={formik.isSubmitting}>
                 {t('send')}
               </Button>
             </div>

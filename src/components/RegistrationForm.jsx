@@ -36,7 +36,8 @@ const RegistrationForm = () => {
     },
     validationSchema: SignupSchema,
     validateOnChange: false,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { setErrors }) => {
+      setIsValidData(true);
       try {
         const response = await axios.post(routes.signupPath(), values);
         const { token, username } = response.data;
@@ -44,17 +45,16 @@ const RegistrationForm = () => {
         const { from } = location.state || { from: { pathname: '/' } };
         history.replace(from);
       } catch (error) {
-        console.log(error.response.status, error.name, error.isAxiosError, 'tut');
-        if (error.isAxiosError || error.response.status === 409) {
+        if (error.message.includes('Network Error')) {
+          setErrors({ username: ' ', password: ' ', confirmPassword: 'networkError' });
+          return;
+        }
+        if (error.response.status === 409) {
           setIsValidData(false);
           inputRef.current.select();
           return;
         }
         throw error;
-        /* setIsValidData(false);
-        inputRef.current.select();
-        console.log(error.name);
-        setErrors(error.name); */
       }
     },
   });
@@ -123,10 +123,15 @@ const RegistrationForm = () => {
                 }
               />
               <Form.Control.Feedback type="invalid">
-                {isValidData ? t(formik.errors.confirmPassword) : t('userAlreadyExists')}
+                {!isValidData ? t('userAlreadyExists') : t(formik.errors.confirmPassword)}
               </Form.Control.Feedback>
             </Form.Group>
-            <Button type="submit" variant="outline-primary" className="w-100">
+            <Button
+              type="submit"
+              variant="outline-primary"
+              className="w-100"
+              disabled={formik.isSubmitting || !formik.isValid}
+            >
               {t('signup')}
             </Button>
           </Form>

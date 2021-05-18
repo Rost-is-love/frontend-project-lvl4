@@ -26,6 +26,7 @@ export default {
       rename: 'Переименовать',
       sure: 'Уверены?',
       mustBeUnique: 'Должно быть уникальным',
+      networkError: 'Ошибка сети',
     },
   },
 };

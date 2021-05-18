@@ -23,7 +23,7 @@ const AuthorizationForm = () => {
       username: '',
       password: '',
     },
-    onSubmit: async (values) => {
+    onSubmit: async (values, { setErrors }) => {
       setAuthFailed(false);
 
       try {
@@ -33,7 +33,11 @@ const AuthorizationForm = () => {
         const { from } = location.state || { from: { pathname: '/' } };
         history.replace(from);
       } catch (error) {
-        if (error.isAxiosError && error.response.status === 401) {
+        if (error.message.includes('Network Error')) {
+          setErrors({ username: ' ', password: 'networkError' });
+          return;
+        }
+        if (error.response.status === 401) {
           setAuthFailed(true);
           inputRef.current.select();
           return;
@@ -56,7 +60,7 @@ const AuthorizationForm = () => {
                 name="username"
                 required
                 type="text"
-                isInvalid={authFailed}
+                isInvalid={authFailed || formik.errors.password}
                 autoComplete="username"
                 id="username"
                 ref={inputRef}
@@ -69,16 +73,23 @@ const AuthorizationForm = () => {
                 value={formik.values.password}
                 required
                 name="password"
-                isInvalid={authFailed}
+                isInvalid={authFailed || formik.errors.password}
                 autoComplete="current-password"
                 type="password"
                 id="password"
               />
-              {authFailed && (
-                <Form.Control.Feedback type="invalid">{t('wrongData')}</Form.Control.Feedback>
+              {(authFailed || formik.errors.password) && (
+                <Form.Control.Feedback type="invalid">
+                  {authFailed ? t('wrongData') : t(formik.errors.password)}
+                </Form.Control.Feedback>
               )}
             </Form.Group>
-            <Button type="submit" variant="outline-primary" className="w-100 mb-3">
+            <Button
+              type="submit"
+              variant="outline-primary"
+              className="w-100 mb-3"
+              disabled={formik.isSubmitting}
+            >
               {t('login')}
             </Button>
             <div className="d-flex flex-column align-items-center">
