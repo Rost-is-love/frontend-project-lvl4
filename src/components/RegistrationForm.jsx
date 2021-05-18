@@ -35,7 +35,6 @@ const RegistrationForm = () => {
       confirmPassword: '',
     },
     validationSchema: SignupSchema,
-    validateOnChange: false,
     onSubmit: async (values, { setErrors }) => {
       setIsValidData(true);
       try {
