@@ -95,8 +95,8 @@ const Messages = () => {
               >
                 {t('send')}
               </Button>
-              <Form.Control.Feedback type="invalid">{t(formik.errors.body)}</Form.Control.Feedback>
             </InputGroup.Append>
+            <Form.Control.Feedback type="invalid">{t(formik.errors.body)}</Form.Control.Feedback>
           </InputGroup>
         </Form>
       </div>
