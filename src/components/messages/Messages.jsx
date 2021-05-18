@@ -33,7 +33,7 @@ const Messages = () => {
     initialValues: {
       body: '',
     },
-    onSubmit: ({ body }, { resetForm, setErrors }) => {
+    onSubmit: ({ body }, { setSubmitting, resetForm, setErrors }) => {
       const message = {
         username: nickname,
         body,
@@ -53,6 +53,7 @@ const Messages = () => {
         });
       } catch (error) {
         setErrors({ body: error.message });
+        setSubmitting(false);
         console.log(error);
       }
     },
