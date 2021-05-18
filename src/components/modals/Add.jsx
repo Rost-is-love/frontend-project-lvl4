@@ -44,7 +44,7 @@ const Add = () => {
         dispatch(hideModal());
       } catch (error) {
         if (error.message.includes('Network Error')) {
-          setErrors({ name: 'networkError' });
+          setErrors({ body: 'networkError' });
           return;
         }
         console.log(error);
