@@ -5,6 +5,7 @@ import { animateScroll } from 'react-scroll';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 
+import getLogger from '../../../lib/logger.js';
 import useSocket from '../../hooks/useSocket.jsx';
 
 const Messages = () => {
@@ -14,6 +15,7 @@ const Messages = () => {
   const currentChannelMessages = messages.filter(({ channelId }) => channelId === currentChannelId);
   const nickname = localStorage.getItem('username');
   const socket = useSocket();
+  const logSocket = getLogger('socket');
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
@@ -31,8 +33,7 @@ const Messages = () => {
     initialValues: {
       body: '',
     },
-    onSubmit: ({ body }, { setSubmitting, resetForm }) => {
-      setSubmitting(false);
+    onSubmit: ({ body }, { resetForm, setErrors }) => {
       const message = {
         username: nickname,
         body,
@@ -40,12 +41,18 @@ const Messages = () => {
       };
 
       try {
+        if (socket.disconnected) {
+          throw new Error('networkError');
+        }
         socket.emit('newMessage', message, (response) => {
-          console.log(response);
+          logSocket(response);
+          if (response.status === 'ok') {
+            resetForm();
+            inputRef.current.focus();
+          }
         });
-        resetForm();
-        inputRef.current.focus();
       } catch (error) {
+        setErrors({ body: error.message });
         console.log(error);
       }
     },
@@ -76,11 +83,18 @@ const Messages = () => {
               onChange={formik.handleChange}
               value={formik.values.body}
               data-testid="new-message"
+              disabled={formik.isSubmitting}
             />
             <InputGroup.Append>
-              <Button type="submit" variant="primary" className="btn">
+              <Button
+                type="submit"
+                variant="primary"
+                className="btn"
+                disabled={formik.isSubmitting}
+              >
                 {t('send')}
               </Button>
+              <Form.Control.Feedback type="invalid">{t(formik.errors.body)}</Form.Control.Feedback>
             </InputGroup.Append>
           </InputGroup>
         </Form>
