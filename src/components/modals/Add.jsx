@@ -43,11 +43,7 @@ const Add = () => {
         resetForm();
         dispatch(hideModal());
       } catch (error) {
-        if (error.message.includes('Network Error')) {
-          setErrors({ body: 'networkError' });
-          console.log('tut');
-          return;
-        }
+        setErrors({ body: error.message });
         console.log(error);
       }
     },
