@@ -29,7 +29,7 @@ const Rename = () => {
       body: yup.string().notOneOf(channelsNames).min(3).max(20).required(),
     }),
     validateOnChange: false,
-    onSubmit: ({ body }, { setSubmitting, resetForm }) => {
+    onSubmit: ({ body }, { setSubmitting, resetForm, setErrors }) => {
       setSubmitting(false);
       const channel = {
         id: channelId,
@@ -37,12 +37,16 @@ const Rename = () => {
       };
 
       try {
+        if (socket.disconnected) {
+          throw new Error('networkError');
+        }
         socket.emit('renameChannel', channel, (response) => {
           console.log(response);
         });
         resetForm();
         dispatch(hideModal());
       } catch (error) {
+        setErrors({ body: error.message });
         console.log(error);
       }
     },
@@ -69,7 +73,7 @@ const Rename = () => {
               value={formik.values.body}
               data-testid="rename-channel"
               name="body"
-              isInvalid={!formik.isValid}
+              isInvalid={formik.errors.body}
             />
             <Form.Control.Feedback type="invalid">{t(formik.errors.body)}</Form.Control.Feedback>
             <div className="mt-2 d-flex justify-content-end">
