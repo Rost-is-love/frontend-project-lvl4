@@ -16,8 +16,10 @@ const UnremovableChannel = ({ name, btnVariant, switchChannel }) => (
     </Button>
   </li>
 );
-
-const RemovableChannel = ({ name, btnVariant, switchChannel, removeChannel, renameChannel }) => {
+// prettier-ignore
+const RemovableChannel = ({
+  name, btnVariant, switchChannel, removeChannel, renameChannel,
+}) => {
   const { t } = useTranslation();
   return (
     <li className="nav-item">
@@ -44,12 +46,10 @@ const Channels = () => {
   const channels = useSelector((state) => state.channelsData.channels);
   const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
   const dispatch = useDispatch();
-
-  const openModal =
-    (type, channelId = null) =>
-    () => {
-      dispatch(showModal({ type, channelId }));
-    };
+  // prettier-ignore
+  const openModal = (type, channelId = null) => () => {
+    dispatch(showModal({ type, channelId }));
+  };
 
   const switchChannel = (id) => () => {
     dispatch(changeCurrentChannel({ id }));

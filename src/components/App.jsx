@@ -1,4 +1,11 @@
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+// prettier-ignore
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+} from 'react-router-dom';
 import { Navbar, Button } from 'react-bootstrap';
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -32,20 +39,16 @@ const AuthProvider = ({ children }) => {
     <authContext.Provider value={{ loggedIn, logIn, logOut }}>{children}</authContext.Provider>
   );
 };
-
+// prettier-ignore
 const PrivateRoute = ({ children, path }) => {
   const auth = useAuth();
 
   return (
     <Route
       path={path}
-      render={({ location }) =>
-        auth.loggedIn ? (
-          children
-        ) : (
-          <Redirect to={{ pathname: '/login', state: { from: location } }} />
-        )
-      }
+      render={({ location }) => (auth.loggedIn
+        ? children
+        : <Redirect to={{ pathname: '/login', state: { from: location } }} />)}
     />
   );
 };
