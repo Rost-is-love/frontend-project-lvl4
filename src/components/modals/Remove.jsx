@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import useSocket from '../../hooks/useSocket.jsx';
@@ -42,7 +42,7 @@ const Remove = () => {
 
       <Modal.Body>
         {t('sure')}
-        <Form.Control.Feedback type="invalid">{t(removingError)}</Form.Control.Feedback>
+        <div className="invalid-feedback d-block">{t(removingError)}</div>
         <div className="d-flex justify-content-between mt-2">
           <Button type="button" variant="secondary" className="mr-2" onClick={onHide}>
             {t('cancel')}
