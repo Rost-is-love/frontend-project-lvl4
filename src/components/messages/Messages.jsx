@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Form, InputGroup } from 'react-bootstrap';
+import { animateScroll } from 'react-scroll';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 
@@ -17,6 +18,14 @@ const Messages = () => {
   useEffect(() => {
     inputRef.current.focus();
   }, [currentChannelId]);
+
+  useEffect(() => {
+    animateScroll.scrollToBottom({
+      containerId: 'messages-box',
+      duration: 0,
+      delay: 0,
+    });
+  });
 
   const formik = useFormik({
     initialValues: {
