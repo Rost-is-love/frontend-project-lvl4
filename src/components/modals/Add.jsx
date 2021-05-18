@@ -45,6 +45,7 @@ const Add = () => {
       } catch (error) {
         if (error.message.includes('Network Error')) {
           setErrors({ body: 'networkError' });
+          console.log('tut');
           return;
         }
         console.log(error);
@@ -73,7 +74,7 @@ const Add = () => {
               value={formik.values.body}
               data-testid="add-channel"
               name="body"
-              isInvalid={!formik.isValid}
+              isInvalid={formik.errors.body}
             />
             <Form.Control.Feedback type="invalid">{t(formik.errors.body)}</Form.Control.Feedback>
             <div className="mt-2 d-flex justify-content-end">
