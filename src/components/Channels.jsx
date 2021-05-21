@@ -2,8 +2,8 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { changeCurrentChannel } from './channelsSlice.js';
-import { showModal } from '../modals/modalsSlice.js';
+import { changeCurrentChannel } from '../slices/channelsSlice.js';
+import { showModal } from '../slices/modalsSlice.js';
 
 const UnremovableChannel = ({ name, btnVariant, switchChannel }) => (
   <li className="nav-item">

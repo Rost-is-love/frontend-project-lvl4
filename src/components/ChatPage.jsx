@@ -1,10 +1,10 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import Channels from './channels/Channels.jsx';
-import Messages from './messages/Messages.jsx';
+import Channels from './Channels.jsx';
+import Messages from './Messages.jsx';
 import routes from '../routes.js';
-import { initChannels } from './channels/channelsSlice.js';
+import { initChannels } from '../slices/channelsSlice.js';
 
 const getAuthHeader = () => {
   const token = localStorage.getItem('token');

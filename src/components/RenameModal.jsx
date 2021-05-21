@@ -5,23 +5,25 @@ import { useFormik } from 'formik';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
-import useSocket from '../../hooks/useSocket.jsx';
-import { hideModal } from './modalsSlice.js';
+import useSocket from '../hooks/useSocket.jsx';
+import { hideModal } from '../slices/modalsSlice.js';
 
-const Add = () => {
+const Rename = () => {
   const { t } = useTranslation();
   const inputRef = useRef();
   const dispatch = useDispatch();
   const socket = useSocket();
   const channels = useSelector((state) => state.channelsData.channels);
   const channelsNames = channels.map((channel) => channel.name);
+  const channelId = useSelector((state) => state.modalsData.channelId);
+  const { name } = channels.find((channel) => channel.id === channelId);
   useEffect(() => {
     inputRef.current.focus();
   }, []);
   // prettier-ignore
   const formik = useFormik({
     initialValues: {
-      body: '',
+      body: name,
     },
     validationSchema: yup.object().shape({
       body: yup.string().notOneOf(channelsNames).min(3).max(20)
@@ -31,6 +33,7 @@ const Add = () => {
     onSubmit: ({ body }, { setSubmitting, resetForm, setErrors }) => {
       setSubmitting(false);
       const channel = {
+        id: channelId,
         name: body,
       };
 
@@ -38,7 +41,7 @@ const Add = () => {
         if (socket.disconnected) {
           throw new Error('networkError');
         }
-        socket.emit('newChannel', channel, (response) => {
+        socket.emit('renameChannel', channel, (response) => {
           if (response.status === 'ok') {
             resetForm();
             dispatch(hideModal());
@@ -58,7 +61,7 @@ const Add = () => {
   return (
     <>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>{t('addChannel')}</Modal.Title>
+        <Modal.Title>{t('renameChannel')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -70,7 +73,7 @@ const Add = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.body}
-              data-testid="add-channel"
+              data-testid="rename-channel"
               name="body"
               isInvalid={formik.errors.body}
               disabled={formik.isSubmitting}
@@ -97,4 +100,4 @@ const Add = () => {
   );
 };
 
-export default Add;
+export default Rename;

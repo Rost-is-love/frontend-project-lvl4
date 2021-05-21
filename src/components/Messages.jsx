@@ -5,8 +5,8 @@ import { animateScroll } from 'react-scroll';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 
-import getLogger from '../../../lib/logger.js';
-import useSocket from '../../hooks/useSocket.jsx';
+import getLogger from '../../lib/logger.js';
+import useSocket from '../hooks/useSocket.jsx';
 
 const Messages = () => {
   const { t } = useTranslation();

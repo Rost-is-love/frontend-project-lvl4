@@ -2,10 +2,10 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from 'react-bootstrap';
 
-import Add from './Add.jsx';
-import Remove from './Remove.jsx';
-import Rename from './Rename.jsx';
-import { hideModal } from './modalsSlice.js';
+import Add from './AddModal.jsx';
+import Remove from './RemoveModal.jsx';
+import Rename from './RenameModal.jsx';
+import { hideModal } from '../slices/modalsSlice.js';
 
 const modals = {
   adding: <Add />,

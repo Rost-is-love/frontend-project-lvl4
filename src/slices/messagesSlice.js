@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import { initChannels, removeChannel } from '../channels/channelsSlice.js';
+import { initChannels, removeChannel } from './channelsSlice.js';
 
 const messagesSlice = createSlice({
   name: 'messagesData',

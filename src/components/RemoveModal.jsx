@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
-import useSocket from '../../hooks/useSocket.jsx';
-import { hideModal } from './modalsSlice.js';
+import useSocket from '../hooks/useSocket.jsx';
+import { hideModal } from '../slices/modalsSlice.js';
 
 const Remove = () => {
   const { t } = useTranslation();
