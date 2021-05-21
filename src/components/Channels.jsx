@@ -5,38 +5,42 @@ import { useTranslation } from 'react-i18next';
 import { changeCurrentChannel } from '../slices/channelsSlice.js';
 import { showModal } from '../slices/modalsSlice.js';
 
-const UnremovableChannel = ({ name, btnVariant, switchChannel }) => (
-  <li className="nav-item">
-    <Button
-      variant={btnVariant}
-      className="nav-link btn-block mb-2 text-left"
-      onClick={switchChannel}
-    >
-      {name}
-    </Button>
-  </li>
-);
-// prettier-ignore
-const RemovableChannel = ({
-  name, btnVariant, switchChannel, removeChannel, renameChannel,
+const Channel = ({
+  // prettier-ignore
+  name,
+  btnVariant,
+  switchChannel,
+  removeChannel,
+  renameChannel,
+  removable,
 }) => {
   const { t } = useTranslation();
   return (
     <li className="nav-item">
-      <Dropdown as={ButtonGroup} className="d-flex mb-2">
+      {removable ? (
+        <Dropdown as={ButtonGroup} className="d-flex mb-2">
+          <Button
+            variant={btnVariant}
+            className="nav-link flex-grow-1 text-left"
+            onClick={switchChannel}
+          >
+            {name}
+          </Button>
+          <Dropdown.Toggle split variant={btnVariant} className="flex-grow-0" />
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={removeChannel}>{t('remove')}</Dropdown.Item>
+            <Dropdown.Item onClick={renameChannel}>{t('rename')}</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      ) : (
         <Button
           variant={btnVariant}
-          className="nav-link flex-grow-1 text-left"
+          className="nav-link btn-block mb-2 text-left"
           onClick={switchChannel}
         >
           {name}
         </Button>
-        <Dropdown.Toggle split variant={btnVariant} className="flex-grow-0" />
-        <Dropdown.Menu>
-          <Dropdown.Item onClick={removeChannel}>{t('remove')}</Dropdown.Item>
-          <Dropdown.Item onClick={renameChannel}>{t('rename')}</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+      )}
     </li>
   );
 };
@@ -67,21 +71,15 @@ const Channels = () => {
         {channels.map(({ id, name, removable }) => {
           const btnVariant = id === currentChannelId ? 'primary' : 'light';
 
-          return removable ? (
-            <RemovableChannel
+          return (
+            <Channel
               key={id}
               name={name}
+              removable={removable}
               btnVariant={btnVariant}
               switchChannel={switchChannel(id)}
               removeChannel={openModal('removing', id)}
               renameChannel={openModal('renaming', id)}
-            />
-          ) : (
-            <UnremovableChannel
-              key={id}
-              name={name}
-              btnVariant={btnVariant}
-              switchChannel={switchChannel(id)}
             />
           );
         })}
