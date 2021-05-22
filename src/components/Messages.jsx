@@ -7,13 +7,15 @@ import { useFormik } from 'formik';
 
 import getLogger from '../../lib/logger.js';
 import useSocket from '../hooks/useSocket.jsx';
+import useAuth from '../hooks/useAuth.jsx';
 
 const Messages = () => {
   const { t } = useTranslation();
+  const auth = useAuth();
   const messages = useSelector((state) => state.messagesData.messages);
   const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
   const currentChannelMessages = messages.filter(({ channelId }) => channelId === currentChannelId);
-  const nickname = localStorage.getItem('username');
+  const nickname = auth.getUsername();
   const socket = useSocket();
   const logSocket = getLogger('socket');
   const inputRef = useRef();

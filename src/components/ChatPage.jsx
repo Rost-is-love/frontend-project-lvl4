@@ -4,11 +4,10 @@ import { useDispatch } from 'react-redux';
 import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import routes from '../routes.js';
+import useAuth from '../hooks/useAuth.jsx';
 import { initChannels } from '../slices/channelsSlice.js';
 
-const getAuthHeader = () => {
-  const token = localStorage.getItem('token');
-
+const getAuthHeader = (token) => {
   if (token) {
     return { Authorization: `Bearer ${token}` };
   }
@@ -17,10 +16,12 @@ const getAuthHeader = () => {
 };
 
 const ChatPage = () => {
+  const auth = useAuth();
+  const token = auth.getToken();
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchContent = async () => {
-      const response = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
+      const response = await axios.get(routes.usersPath(), { headers: getAuthHeader(token) });
       const { data } = response;
 
       dispatch(initChannels({ data }));

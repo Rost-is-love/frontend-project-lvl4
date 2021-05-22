@@ -20,6 +20,8 @@ import authContext from '../contexts/authContext.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 
 const AuthProvider = ({ children }) => {
+  const getUsername = () => localStorage.getItem('username');
+  const getToken = () => localStorage.getItem('token');
   const isLoggedIn = has(localStorage, 'token');
   const [loggedIn, setLoggedIn] = useState(isLoggedIn);
 
@@ -36,7 +38,17 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <authContext.Provider value={{ loggedIn, logIn, logOut }}>{children}</authContext.Provider>
+    <authContext.Provider
+      value={{
+        getUsername,
+        getToken,
+        loggedIn,
+        logIn,
+        logOut,
+      }}
+    >
+      {children}
+    </authContext.Provider>
   );
 };
 // prettier-ignore
