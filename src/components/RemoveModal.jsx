@@ -20,7 +20,7 @@ const Remove = () => {
   const removeChannel = (id) => () => {
     setRemovingError(null);
     try {
-      socket.removeChan({ id });
+      socket.removeChan({ id }, onHide);
       // dispatch(hideModal());
     } catch (error) {
       setRemovingError(error.message);

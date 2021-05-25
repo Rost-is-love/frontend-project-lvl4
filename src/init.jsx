@@ -1,7 +1,7 @@
 import React from 'react';
 import i18next from 'i18next';
 import * as yup from 'yup';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
 import { noop } from 'lodash';
 import getLogger from '../lib/logger.js';
@@ -11,7 +11,6 @@ import createStore from './store.js';
 import resources from './locales/ru.js';
 import { addMessage } from './slices/messagesSlice.js';
 import { addChannel, removeChannel, renameChannel } from './slices/channelsSlice.js';
-import { hideModal } from './slices/modalsSlice.js';
 import SocketContext from './contexts/socketContext.jsx';
 import yupDictionary from './locales/yup.js';
 
@@ -43,7 +42,7 @@ export default async (socket) => {
     store.dispatch(renameChannel(channel));
   });
 
-  const withTimeout = (onSuccess, onTimeout, timeout) => {
+  const withTimeout = (onSuccess, onTimeout, timeout, onHide) => {
     // eslint-disable-next-line functional/no-let
     let called = false;
 
@@ -61,45 +60,38 @@ export default async (socket) => {
       }
       called = true;
       clearTimeout(timer);
+      onHide();
       onSuccess(args);
     };
   };
 
   const hadnleSocketEmit = (action, data, onHide) => {
-    /* if (socket.disconnected) {
-      throw new Error('networkError');
-    } */
     socket.emit(
       action,
       data,
       withTimeout(
         () => {
-          onHide();
           console.log('success!');
         },
         () => {
           console.log('timeout!');
         },
         1000,
+        onHide,
       ),
     );
   };
 
   const SocketProvider = ({ children }) => {
-    const dispatch = useDispatch();
-    const onHide = () => {
-      dispatch(hideModal());
-    };
-
-    const renameChan = (channel) => {
+    const renameChan = (channel, onHide) => {
       hadnleSocketEmit('renameChannel', channel, onHide);
     };
 
-    const addChan = (channel) => {
+    const addChan = (channel, onHide) => {
       hadnleSocketEmit('newChannel', channel, onHide);
     };
 
-    const removeChan = (id) => {
+    const removeChan = (id, onHide) => {
       hadnleSocketEmit('removeChannel', id, onHide);
     };
 
