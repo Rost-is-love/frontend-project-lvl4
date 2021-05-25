@@ -43,16 +43,21 @@ export default async (socket) => {
   });
 
   const withTimeout = (onSuccess, onTimeout, timeout) => {
+    // eslint-disable-next-line functional/no-let
     let called = false;
 
     const timer = setTimeout(() => {
-      if (called) return;
+      if (called) {
+        return;
+      }
       called = true;
       onTimeout();
     }, timeout);
 
     return (...args) => {
-      if (called) return;
+      if (called) {
+        return;
+      }
       called = true;
       clearTimeout(timer);
       onSuccess(args);
@@ -71,7 +76,7 @@ export default async (socket) => {
           console.log('success!');
         },
         () => {
-          console.log('timeout!');
+          throw new Error('networkError');
         },
         1000,
       ),
@@ -101,7 +106,7 @@ export default async (socket) => {
           });
         }, 1000);
       } else {
-        hadnleSocketEmit('newMessage', message);
+        socket.emit('newMessage', message, noop);
       }
     };
 

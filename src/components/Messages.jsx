@@ -5,7 +5,6 @@ import { animateScroll } from 'react-scroll';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 
-// import getLogger from '../../lib/logger.js';
 import useSocket from '../hooks/useSocket.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 
@@ -17,7 +16,6 @@ const Messages = () => {
   const currentChannelMessages = messages.filter(({ channelId }) => channelId === currentChannelId);
   const nickname = auth.getUsername();
   const socket = useSocket();
-  // const logSocket = getLogger('socket');
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
@@ -46,16 +44,6 @@ const Messages = () => {
         socket.sendMessage(message);
         resetForm();
         inputRef.current.focus();
-        /* if (socket.disconnected) {
-          throw new Error('networkError');
-        }
-        socket.emit('newMessage', message, (response) => {
-          logSocket(response);
-          if (response.status === 'ok') {
-            resetForm();
-            inputRef.current.focus();
-          }
-        }); */
       } catch (error) {
         setErrors({ body: error.message });
         setSubmitting(false);
