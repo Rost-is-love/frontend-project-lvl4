@@ -42,11 +42,40 @@ export default async (socket) => {
     store.dispatch(renameChannel(channel));
   });
 
+  const withTimeout = (onSuccess, onTimeout, timeout) => {
+    let called = false;
+
+    const timer = setTimeout(() => {
+      if (called) return;
+      called = true;
+      onTimeout();
+    }, timeout);
+
+    return (...args) => {
+      if (called) return;
+      called = true;
+      clearTimeout(timer);
+      onSuccess(args);
+    };
+  };
+
   const hadnleSocketEmit = (action, data) => {
-    if (socket.disconnected) {
+    /* if (socket.disconnected) {
       throw new Error('networkError');
-    }
-    socket.emit(action, data, noop);
+    } */
+    socket.emit(
+      action,
+      data,
+      withTimeout(
+        () => {
+          console.log('success!');
+        },
+        () => {
+          console.log('timeout!');
+        },
+        1000,
+      ),
+    );
   };
 
   const SocketProvider = ({ children }) => {
@@ -74,15 +103,6 @@ export default async (socket) => {
       } else {
         hadnleSocketEmit('newMessage', message);
       }
-      /* setInterval(() => {
-        socket.volatile.emit('newMessage', message, (response) => {
-          console.log(response);
-        });
-      }, 1000); */
-      /* socket.volatile.emit('newMessage', message, (response) => {
-        console.log(response);
-      }); */
-      // hadnleSocketEmit(, message);
     };
 
     return (
