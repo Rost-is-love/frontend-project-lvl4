@@ -63,7 +63,23 @@ export default async (socket) => {
     };
 
     const sendMessage = (message) => {
-      socket.volatile.emit('newMessage', message, noop);
+      if (socket.disconnected) {
+        setInterval(() => {
+          socket.volatile.emit('newMessage', message, (response) => {
+            console.log(response);
+          });
+        }, 1000);
+      } else {
+        hadnleSocketEmit('newMessage', message);
+      }
+      /* setInterval(() => {
+        socket.volatile.emit('newMessage', message, (response) => {
+          console.log(response);
+        });
+      }, 1000); */
+      /* socket.volatile.emit('newMessage', message, (response) => {
+        console.log(response);
+      }); */
       // hadnleSocketEmit(, message);
     };
 
