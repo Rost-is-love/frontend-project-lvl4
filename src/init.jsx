@@ -64,8 +64,8 @@ export default async (socket) => {
 
     const sendMessage = (message) => {
       if (socket.disconnected) {
-        setInterval(() => {
-          const sendingMessage = socket.volatile.emit('newMessage', message, (response) => {
+        const sendingMessage = setInterval(() => {
+          socket.volatile.emit('newMessage', message, (response) => {
             if (response.status === 'ok') {
               clearInterval(sendingMessage);
             }
