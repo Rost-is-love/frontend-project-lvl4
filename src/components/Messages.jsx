@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { animateScroll } from 'react-scroll';
 import { useTranslation } from 'react-i18next';
@@ -7,12 +6,13 @@ import { useFormik } from 'formik';
 
 import useSocket from '../hooks/useSocket.jsx';
 import useAuth from '../hooks/useAuth.jsx';
+import { getMessages, getCurChannelId } from '../slices/index.js';
 
 const Messages = () => {
   const { t } = useTranslation();
   const auth = useAuth();
-  const messages = useSelector((state) => state.messagesData.messages);
-  const currentChannelId = useSelector((state) => state.channelsData.currentChannelId);
+  const messages = getMessages();
+  const currentChannelId = getCurChannelId();
   const currentChannelMessages = messages.filter(({ channelId }) => channelId === currentChannelId);
   const nickname = auth.getUsername();
   const socket = useSocket();

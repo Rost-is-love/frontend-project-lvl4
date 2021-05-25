@@ -1,21 +1,22 @@
 import * as yup from 'yup';
 import React, { useRef, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import useSocket from '../hooks/useSocket.jsx';
 import { hideModal } from '../slices/modalsSlice.js';
+import { getChannels, getChannelId } from '../slices/index.js';
 
 const Rename = () => {
   const { t } = useTranslation();
   const inputRef = useRef();
   const dispatch = useDispatch();
   const socket = useSocket();
-  const channels = useSelector((state) => state.channelsData.channels);
+  const channels = getChannels();
   const channelsNames = channels.map((channel) => channel.name);
-  const channelId = useSelector((state) => state.modalsData.channelId);
+  const channelId = getChannelId();
   const { name } = channels.find((channel) => channel.id === channelId);
   useEffect(() => {
     inputRef.current.focus();
