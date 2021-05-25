@@ -39,7 +39,7 @@ const Rename = () => {
 
       try {
         socket.renameChan(channel);
-        dispatch(hideModal());
+        // dispatch(hideModal());
       } catch (error) {
         setErrors({ body: error.message });
       }

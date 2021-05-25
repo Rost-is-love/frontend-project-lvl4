@@ -36,7 +36,7 @@ const Add = () => {
 
       try {
         socket.addChan(channel);
-        dispatch(hideModal());
+        // dispatch(hideModal());
       } catch (error) {
         setErrors({ body: error.message });
       }

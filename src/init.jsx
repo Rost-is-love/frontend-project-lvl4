@@ -1,7 +1,7 @@
 import React from 'react';
 import i18next from 'i18next';
 import * as yup from 'yup';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
 import { noop } from 'lodash';
 import getLogger from '../lib/logger.js';
@@ -11,6 +11,7 @@ import createStore from './store.js';
 import resources from './locales/ru.js';
 import { addMessage } from './slices/messagesSlice.js';
 import { addChannel, removeChannel, renameChannel } from './slices/channelsSlice.js';
+import { hideModal } from './slices/modalsSlice.js';
 import SocketContext from './contexts/socketContext.jsx';
 import yupDictionary from './locales/yup.js';
 
@@ -64,7 +65,7 @@ export default async (socket) => {
     };
   };
 
-  const hadnleSocketEmit = (action, data) => {
+  const hadnleSocketEmit = (action, data, onHide) => {
     /* if (socket.disconnected) {
       throw new Error('networkError');
     } */
@@ -73,10 +74,11 @@ export default async (socket) => {
       data,
       withTimeout(
         () => {
+          onHide();
           console.log('success!');
         },
         () => {
-          throw new Error('networkError');
+          console.log('timeout!');
         },
         1000,
       ),
@@ -84,16 +86,21 @@ export default async (socket) => {
   };
 
   const SocketProvider = ({ children }) => {
+    const dispatch = useDispatch();
+    const onHide = () => {
+      dispatch(hideModal());
+    };
+
     const renameChan = (channel) => {
-      hadnleSocketEmit('renameChannel', channel);
+      hadnleSocketEmit('renameChannel', channel, onHide);
     };
 
     const addChan = (channel) => {
-      hadnleSocketEmit('newChannel', channel);
+      hadnleSocketEmit('newChannel', channel, onHide);
     };
 
     const removeChan = (id) => {
-      hadnleSocketEmit('removeChannel', id);
+      hadnleSocketEmit('removeChannel', id, onHide);
     };
 
     const sendMessage = (message) => {

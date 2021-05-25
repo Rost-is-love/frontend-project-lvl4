@@ -21,7 +21,7 @@ const Remove = () => {
     setRemovingError(null);
     try {
       socket.removeChan({ id });
-      dispatch(hideModal());
+      // dispatch(hideModal());
     } catch (error) {
       setRemovingError(error.message);
     }
