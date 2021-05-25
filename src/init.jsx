@@ -48,8 +48,9 @@ export default async (socket) => {
         hadnleSocketEmit(action, data);
       }, 1000);
       // throw new Error('networkError');
+    } else {
+      socket.emit(action, data, noop);
     }
-    socket.emit(action, data, noop);
   };
 
   const SocketProvider = ({ children }) => {
