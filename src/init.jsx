@@ -63,7 +63,8 @@ export default async (socket) => {
     };
 
     const sendMessage = (message) => {
-      hadnleSocketEmit('newMessage', message);
+      socket.volatile.emit('newMessage', message, noop);
+      // hadnleSocketEmit(, message);
     };
 
     return (
