@@ -43,7 +43,10 @@ const Messages = () => {
       };
 
       try {
-        if (socket.disconnected) {
+        socket.sendMessage(message);
+        resetForm();
+        inputRef.current.focus();
+        /* if (socket.disconnected) {
           throw new Error('networkError');
         }
         socket.emit('newMessage', message, (response) => {
@@ -52,11 +55,10 @@ const Messages = () => {
             resetForm();
             inputRef.current.focus();
           }
-        });
+        }); */
       } catch (error) {
         setErrors({ body: error.message });
         setSubmitting(false);
-        console.log(error);
       }
     },
   });

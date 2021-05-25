@@ -30,7 +30,7 @@ const Rename = () => {
         .required(),
     }),
     validateOnChange: false,
-    onSubmit: ({ body }, { setSubmitting, resetForm, setErrors }) => {
+    onSubmit: ({ body }, { setSubmitting, setErrors }) => {
       setSubmitting(false);
       const channel = {
         id: channelId,
@@ -38,18 +38,10 @@ const Rename = () => {
       };
 
       try {
-        if (socket.disconnected) {
-          throw new Error('networkError');
-        }
-        socket.emit('renameChannel', channel, (response) => {
-          if (response.status === 'ok') {
-            resetForm();
-            dispatch(hideModal());
-          }
-        });
+        socket.renameChan(channel);
+        dispatch(hideModal());
       } catch (error) {
         setErrors({ body: error.message });
-        console.log(error);
       }
     },
   });

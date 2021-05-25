@@ -20,17 +20,10 @@ const Remove = () => {
   const removeChannel = (id) => () => {
     setRemovingError(null);
     try {
-      if (socket.disconnected) {
-        throw new Error('networkError');
-      }
-      socket.emit('removeChannel', { id }, (response) => {
-        if (response.status === 'ok') {
-          dispatch(hideModal());
-        }
-      });
+      socket.removeChan({ id });
+      dispatch(hideModal());
     } catch (error) {
       setRemovingError(error.message);
-      console.log(error);
     }
   };
 

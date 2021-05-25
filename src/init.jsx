@@ -3,6 +3,7 @@ import i18next from 'i18next';
 import * as yup from 'yup';
 import { Provider } from 'react-redux';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
+import { noop } from 'lodash';
 import getLogger from '../lib/logger.js';
 
 import App from './components/App.jsx';
@@ -41,13 +42,51 @@ export default async (socket) => {
     store.dispatch(renameChannel(channel));
   });
 
+  const hadnleSocketEmit = (action, data) => {
+    if (socket.disconnected) {
+      throw new Error('networkError');
+    }
+    socket.emit(action, data, noop);
+  };
+
+  const SocketProvider = ({ children }) => {
+    const renameChan = (channel) => {
+      hadnleSocketEmit('renameChannel', channel);
+    };
+
+    const addChan = (channel) => {
+      hadnleSocketEmit('newChannel', channel);
+    };
+
+    const removeChan = (id) => {
+      hadnleSocketEmit('removeChannel', id);
+    };
+
+    const sendMessage = (message) => {
+      hadnleSocketEmit('newMessage', message);
+    };
+
+    return (
+      <SocketContext.Provider
+        value={{
+          renameChan,
+          removeChan,
+          addChan,
+          sendMessage,
+        }}
+      >
+        {children}
+      </SocketContext.Provider>
+    );
+  };
+
   return (
     <Provider store={store}>
-      <SocketContext.Provider value={socket}>
+      <SocketProvider>
         <I18nextProvider i18n={i18n}>
           <App />
         </I18nextProvider>
-      </SocketContext.Provider>
+      </SocketProvider>
     </Provider>
   );
 };

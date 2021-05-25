@@ -28,25 +28,17 @@ const Add = () => {
         .required(),
     }),
     validateOnChange: false,
-    onSubmit: ({ body }, { setSubmitting, resetForm, setErrors }) => {
+    onSubmit: ({ body }, { setSubmitting, setErrors }) => {
       setSubmitting(false);
       const channel = {
         name: body,
       };
 
       try {
-        if (socket.disconnected) {
-          throw new Error('networkError');
-        }
-        socket.emit('newChannel', channel, (response) => {
-          if (response.status === 'ok') {
-            resetForm();
-            dispatch(hideModal());
-          }
-        });
+        socket.addChan(channel);
+        dispatch(hideModal());
       } catch (error) {
         setErrors({ body: error.message });
-        console.log(error);
       }
     },
   });
