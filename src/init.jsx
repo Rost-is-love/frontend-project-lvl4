@@ -56,11 +56,12 @@ export default async (socket) => {
 
     return (...args) => {
       if (called) {
+        onHide();
         return;
       }
       called = true;
-      clearTimeout(timer);
       onHide();
+      clearTimeout(timer);
       onSuccess(args);
     };
   };
