@@ -47,7 +47,7 @@ export default async (socket) => {
       setTimeout(() => {
         hadnleSocketEmit(action, data);
       }, 1000);
-      // throw new Error('networkError');
+      throw new Error('networkError');
     } else {
       socket.emit(action, data, noop);
     }
