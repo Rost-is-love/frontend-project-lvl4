@@ -44,13 +44,9 @@ export default async (socket) => {
 
   const hadnleSocketEmit = (action, data) => {
     if (socket.disconnected) {
-      setTimeout(() => {
-        hadnleSocketEmit(action, data);
-      }, 1000);
       throw new Error('networkError');
-    } else {
-      socket.emit(action, data, noop);
     }
+    socket.emit(action, data, noop);
   };
 
   const SocketProvider = ({ children }) => {
@@ -67,15 +63,17 @@ export default async (socket) => {
     };
 
     const sendMessage = (message) => {
-      // if (socket.disconnected) {
-      // setInterval(() => {
-      socket.volatile.emit('newMessage', message, (response) => {
-        console.log(response);
-      });
-      // }, 1000);
-      /* } else {
+      if (socket.disconnected) {
+        setInterval(() => {
+          socket.volatile.emit('newMessage', message, () => {
+            /* if (response.status === 'ok') {
+              clearInterval(sendingMessage);
+            } */
+          });
+        }, 1000);
+      } else {
         hadnleSocketEmit('newMessage', message);
-      } */
+      }
       /* setInterval(() => {
         socket.volatile.emit('newMessage', message, (response) => {
           console.log(response);
