@@ -2,12 +2,13 @@ import React from 'react';
 import i18next from 'i18next';
 import * as yup from 'yup';
 import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
 import { noop } from 'lodash';
 import getLogger from '../lib/logger.js';
 
 import App from './components/App.jsx';
-import createStore from './store.js';
+import reducer from './store.js';
 import resources from './locales/ru.js';
 import { addMessage } from './slices/messagesSlice.js';
 import { addChannel, removeChannel, renameChannel } from './slices/channelsSlice.js';
@@ -15,7 +16,7 @@ import SocketContext from './contexts/socketContext.jsx';
 import yupDictionary from './locales/yup.js';
 
 export default async (socket) => {
-  const store = createStore();
+  const store = configureStore({ reducer });
   const logSocket = getLogger('socket');
 
   const i18n = i18next.createInstance();
