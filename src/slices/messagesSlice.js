@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import { initChannels, removeChannel } from './channelsSlice.js';
+import channelsSlice from './channelsSlice.js';
 
-export const messagesSlice = createSlice({
+export default createSlice({
   name: 'messagesData',
   initialState: {
     messages: [],
@@ -13,16 +13,14 @@ export const messagesSlice = createSlice({
     },
   },
   extraReducers: {
-    [initChannels]: (state, action) => {
+    [channelsSlice.actions.initChannels]: (state, action) => {
       const { messages } = action.payload.data;
       state.messages = messages;
     },
-    [removeChannel]: (state, action) => {
+    [channelsSlice.actions.removeChannel]: (state, action) => {
       const { id } = action.payload;
       const newMessages = state.messages.filter((message) => message.channelId !== id);
       state.messages = newMessages;
     },
   },
 });
-
-export default messagesSlice.reducer;

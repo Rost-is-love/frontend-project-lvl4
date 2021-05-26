@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 // prettier-ignore
-export const channelsSlice = createSlice({
+export default createSlice({
   name: 'channelsData',
   initialState: {
     channels: [],
@@ -30,13 +30,3 @@ export const channelsSlice = createSlice({
     },
   },
 });
-// prettier-ignore
-export const {
-  initChannels,
-  addChannel,
-  removeChannel,
-  renameChannel,
-  changeCurrentChannel,
-} = channelsSlice.actions;
-
-export default channelsSlice.reducer;

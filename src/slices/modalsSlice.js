@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
-export const modalsSlice = createSlice({
+export default createSlice({
   name: 'modalsData',
   initialState: {
     type: null,
@@ -21,7 +21,3 @@ export const modalsSlice = createSlice({
     },
   },
 });
-
-export const { showModal, hideModal } = modalsSlice.actions;
-
-export default modalsSlice.reducer;

@@ -11,7 +11,6 @@ import App from './components/App.jsx';
 import reducer from './store.js';
 import resources from './locales/ru.js';
 import { actions } from './slices';
-import { addChannel, removeChannel, renameChannel } from './slices/channelsSlice.js';
 import SocketContext from './contexts/socketContext.jsx';
 import yupDictionary from './locales/yup.js';
 
@@ -32,15 +31,15 @@ export default async (socket) => {
   });
 
   socket.on('newChannel', (channel) => {
-    store.dispatch(addChannel({ channel }));
+    store.dispatch(actions.addChannel({ channel }));
   });
 
   socket.on('removeChannel', ({ id }) => {
-    store.dispatch(removeChannel({ id }));
+    store.dispatch(actions.removeChannel({ id }));
   });
 
   socket.on('renameChannel', (channel) => {
-    store.dispatch(renameChannel(channel));
+    store.dispatch(actions.renameChannel(channel));
   });
 
   const withTimeout = (onSuccess, onTimeout, timeout, onHide) => {
