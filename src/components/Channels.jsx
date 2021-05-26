@@ -1,10 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { changeCurrentChannel } from '../slices/channelsSlice.js';
 import { showModal } from '../slices/modalsSlice.js';
-import { getChannels, getCurChannelId } from '../slices/index.js';
+import { selectChannels, selectCurChannelId } from '../slices';
 
 const Channel = ({
   // prettier-ignore
@@ -48,8 +48,8 @@ const Channel = ({
 
 const Channels = () => {
   const { t } = useTranslation();
-  const channels = getChannels();
-  const currentChannelId = getCurChannelId();
+  const channels = useSelector(selectChannels);
+  const currentChannelId = useSelector(selectCurChannelId);
   const dispatch = useDispatch();
   // prettier-ignore
   const openModal = (type, channelId = null) => () => {

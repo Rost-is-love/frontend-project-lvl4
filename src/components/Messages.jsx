@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { animateScroll } from 'react-scroll';
 import { useTranslation } from 'react-i18next';
@@ -6,14 +7,13 @@ import { useFormik } from 'formik';
 
 import useSocket from '../hooks/useSocket.jsx';
 import useAuth from '../hooks/useAuth.jsx';
-import { getMessages, getCurChannelId } from '../slices/index.js';
+import { selectMessages, selectCurChannelId } from '../slices';
 
 const Messages = () => {
   const { t } = useTranslation();
   const auth = useAuth();
-  const messages = getMessages();
-  const currentChannelId = getCurChannelId();
-  const currentChannelMessages = messages.filter(({ channelId }) => channelId === currentChannelId);
+  const messages = useSelector(selectMessages);
+  const currentChannelId = useSelector(selectCurChannelId);
   const nickname = auth.getUsername();
   const socket = useSocket();
   const inputRef = useRef();
@@ -53,7 +53,7 @@ const Messages = () => {
 
   const renderMessages = () => (
     <div id="messages-box" className="chat-messages overflow-auto mb-3">
-      {currentChannelMessages.map(({ body, username, id }) => (
+      {messages.map(({ body, username, id }) => (
         <div className="text-break" key={id}>
           <b>{username}</b>
           {`: ${body}`}
@@ -64,7 +64,7 @@ const Messages = () => {
 
   return (
     <div className="d-flex flex-column h-100">
-      {currentChannelMessages && renderMessages()}
+      {messages && renderMessages()}
       <div className="mt-auto">
         <Form noValidate onSubmit={formik.handleSubmit}>
           <InputGroup>

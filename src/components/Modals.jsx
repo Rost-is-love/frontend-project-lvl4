@@ -1,12 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Modal } from 'react-bootstrap';
 
 import Add from './AddModal.jsx';
 import Remove from './RemoveModal.jsx';
 import Rename from './RenameModal.jsx';
 import { hideModal } from '../slices/modalsSlice.js';
-import { getIsVisible, getModalType } from '../slices/index.js';
+import { selectIsVisible, selectModalType } from '../slices';
 
 const modals = {
   adding: <Add />,
@@ -15,8 +15,8 @@ const modals = {
 };
 
 const Modals = () => {
-  const isVisible = getIsVisible();
-  const modalType = getModalType();
+  const isVisible = useSelector(selectIsVisible);
+  const modalType = useSelector(selectModalType);
   const dispatch = useDispatch();
 
   if (!isVisible) {
