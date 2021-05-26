@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 // prettier-ignore
-const channelsSlice = createSlice({
+export const channelsSlice = createSlice({
   name: 'channelsData',
   initialState: {
     channels: [],

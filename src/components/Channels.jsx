@@ -2,9 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { changeCurrentChannel } from '../slices/channelsSlice.js';
-import { showModal } from '../slices/modalsSlice.js';
-import { selectChannels, selectCurChannelId } from '../slices';
+import { selectChannels, selectCurChannelId, actions } from '../slices';
 
 const Channel = ({
   // prettier-ignore
@@ -53,11 +51,11 @@ const Channels = () => {
   const dispatch = useDispatch();
   // prettier-ignore
   const openModal = (type, channelId = null) => () => {
-    dispatch(showModal({ type, channelId }));
+    dispatch(actions.showModal({ type, channelId }));
   };
 
   const switchChannel = (id) => () => {
-    dispatch(changeCurrentChannel({ id }));
+    dispatch(actions.changeCurrentChannel({ id }));
   };
 
   return (

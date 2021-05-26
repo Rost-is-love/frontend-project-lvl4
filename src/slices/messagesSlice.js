@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { initChannels, removeChannel } from './channelsSlice.js';
 
-const messagesSlice = createSlice({
+export const messagesSlice = createSlice({
   name: 'messagesData',
   initialState: {
     messages: [],
@@ -24,7 +24,5 @@ const messagesSlice = createSlice({
     },
   },
 });
-
-export const { addMessage } = messagesSlice.actions;
 
 export default messagesSlice.reducer;

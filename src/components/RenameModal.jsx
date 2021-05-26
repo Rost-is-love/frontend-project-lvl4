@@ -6,8 +6,7 @@ import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import useSocket from '../hooks/useSocket.jsx';
-import { hideModal } from '../slices/modalsSlice.js';
-import { selectChannels, selectChannelId } from '../slices';
+import { selectChannels, selectChannelId, actions } from '../slices';
 
 const Rename = () => {
   const { t } = useTranslation();
@@ -40,7 +39,7 @@ const Rename = () => {
 
       try {
         socket.renameChan(channel, () => {
-          dispatch(hideModal());
+          dispatch(actions.hideModal());
         });
       } catch (error) {
         setErrors({ body: error.message });
@@ -49,7 +48,7 @@ const Rename = () => {
   });
 
   const onHide = () => {
-    dispatch(hideModal());
+    dispatch(actions.hideModal());
   };
 
   return (

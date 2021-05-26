@@ -10,7 +10,7 @@ import getLogger from '../lib/logger.js';
 import App from './components/App.jsx';
 import reducer from './store.js';
 import resources from './locales/ru.js';
-import { addMessage } from './slices/messagesSlice.js';
+import { actions } from './slices';
 import { addChannel, removeChannel, renameChannel } from './slices/channelsSlice.js';
 import SocketContext from './contexts/socketContext.jsx';
 import yupDictionary from './locales/yup.js';
@@ -27,7 +27,7 @@ export default async (socket) => {
   yup.setLocale(yupDictionary);
 
   socket.on('newMessage', (message) => {
-    store.dispatch(addMessage({ message }));
+    store.dispatch(actions.addMessage({ message }));
     logSocket('newMessage', message);
   });
 

@@ -5,8 +5,7 @@ import { Modal } from 'react-bootstrap';
 import Add from './AddModal.jsx';
 import Remove from './RemoveModal.jsx';
 import Rename from './RenameModal.jsx';
-import { hideModal } from '../slices/modalsSlice.js';
-import { selectIsVisible, selectModalType } from '../slices';
+import { selectIsVisible, selectModalType, actions } from '../slices';
 
 const modals = {
   adding: <Add />,
@@ -24,7 +23,7 @@ const Modals = () => {
   }
 
   const onHide = () => {
-    dispatch(hideModal());
+    dispatch(actions.hideModal());
   };
 
   return (

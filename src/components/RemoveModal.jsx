@@ -4,8 +4,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 
 import useSocket from '../hooks/useSocket.jsx';
-import { hideModal } from '../slices/modalsSlice.js';
-import { selectChannelId } from '../slices';
+import { selectChannelId, actions } from '../slices';
 
 const Remove = () => {
   const { t } = useTranslation();
@@ -15,7 +14,7 @@ const Remove = () => {
   const socket = useSocket();
 
   const onHide = () => {
-    dispatch(hideModal());
+    dispatch(actions.hideModal());
   };
 
   const removeChannel = (id) => () => {

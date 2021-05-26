@@ -5,7 +5,7 @@ import Channels from './Channels.jsx';
 import Messages from './Messages.jsx';
 import routes from '../routes.js';
 import useAuth from '../hooks/useAuth.jsx';
-import { initChannels } from '../slices/channelsSlice.js';
+import { actions } from '../slices';
 
 const getAuthHeader = (token) => {
   if (token) {
@@ -24,7 +24,7 @@ const ChatPage = () => {
       const response = await axios.get(routes.usersPath(), { headers: getAuthHeader(token) });
       const { data } = response;
 
-      dispatch(initChannels({ data }));
+      dispatch(actions.initChannels({ data }));
     };
 
     fetchContent();
