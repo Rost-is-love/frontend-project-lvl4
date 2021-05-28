@@ -8,9 +8,8 @@ import { noop } from 'lodash';
 import getLogger from '../lib/logger.js';
 
 import App from './components/App.jsx';
-import reducer from './store.js';
 import resources from './locales/ru.js';
-import { actions } from './slices';
+import reducer, { actions } from './slices';
 import SocketContext from './contexts/socketContext.jsx';
 import yupDictionary from './locales/yup.js';
 

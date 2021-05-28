@@ -1,3 +1,5 @@
+import { combineReducers } from 'redux';
+
 import channelsSlice from './channelsSlice.js';
 import messagesSlice from './messagesSlice.js';
 import modalsSlice from './modalsSlice.js';
@@ -10,6 +12,8 @@ export const actions = {
   ...modalsSlice.actions,
 };
 
-export const channelsReducer = channelsSlice.reducer;
-export const messagesReducer = messagesSlice.reducer;
-export const modalsReducer = modalsSlice.reducer;
+export default combineReducers({
+  channelsData: channelsSlice.reducer,
+  messagesData: messagesSlice.reducer,
+  modalsData: modalsSlice.reducer,
+});
