@@ -9,6 +9,23 @@ import useSocket from '../hooks/useSocket.jsx';
 import useAuth from '../hooks/useAuth.jsx';
 import { selectMessages, selectCurChannelId } from '../slices';
 
+const MessagesBox = ({ messages }) => {
+  if (messages.length === 0) {
+    return null;
+  }
+
+  return (
+    <div id="messages-box" className="chat-messages overflow-auto mb-3">
+      {messages.map(({ body, username, id }) => (
+        <div className="text-break" key={id}>
+          <b>{username}</b>
+          {`: ${body}`}
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const Messages = () => {
   const { t } = useTranslation();
   const auth = useAuth();
@@ -17,6 +34,7 @@ const Messages = () => {
   const nickname = auth.getUsername();
   const socket = useSocket();
   const inputRef = useRef();
+
   useEffect(() => {
     inputRef.current.focus();
   }, [currentChannelId]);
@@ -51,20 +69,9 @@ const Messages = () => {
     },
   });
 
-  const renderMessages = () => (
-    <div id="messages-box" className="chat-messages overflow-auto mb-3">
-      {messages.map(({ body, username, id }) => (
-        <div className="text-break" key={id}>
-          <b>{username}</b>
-          {`: ${body}`}
-        </div>
-      ))}
-    </div>
-  );
-
   return (
     <div className="d-flex flex-column h-100">
-      {messages && renderMessages()}
+      <MessagesBox messages={messages} />
       <div className="mt-auto">
         <Form noValidate onSubmit={formik.handleSubmit}>
           <InputGroup>
