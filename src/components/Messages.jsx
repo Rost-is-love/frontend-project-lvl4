@@ -1,3 +1,4 @@
+import * as yup from 'yup';
 import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Button, Form, InputGroup } from 'react-bootstrap';
@@ -51,6 +52,10 @@ const Messages = () => {
     initialValues: {
       body: '',
     },
+    validationSchema: yup.object().shape({
+      body: yup.string().required(),
+    }),
+    validateOnChange: false,
     onSubmit: ({ body }, { setSubmitting, resetForm, setErrors }) => {
       const message = {
         username: nickname,
