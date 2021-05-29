@@ -4,7 +4,6 @@ import { noop } from 'lodash';
 import SocketContext from './contexts/socketContext.jsx';
 
 const SocketProvider = ({ children, socket }) => {
-  console.log(children, socket, 'tut');
   const withTimeout = (onSuccess, onTimeout, timeout, onHide) => {
     // eslint-disable-next-line functional/no-let
     let called = false;
