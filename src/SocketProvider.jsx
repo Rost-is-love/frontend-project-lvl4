@@ -31,9 +31,9 @@ const SocketProvider = ({ children, socket }) => {
   return (
     <SocketContext.Provider
       value={{
-        renameChan: wrapSocket((...args) => socket.emit('renameChannel', ...args)),
-        removeChan: wrapSocket((...args) => socket.emit('removeChannel', ...args)),
-        addChan: wrapSocket((...args) => socket.emit('newChannel', ...args)),
+        renameChan: wrapSocket((...args) => socket.volatile.emit('renameChannel', ...args)),
+        removeChan: wrapSocket((...args) => socket.volatile.emit('removeChannel', ...args)),
+        addChan: wrapSocket((...args) => socket.volatile.emit('newChannel', ...args)),
         sendMessage: wrapSocket((...args) => socket.volatile.emit('newMessage', ...args)),
       }}
     >
