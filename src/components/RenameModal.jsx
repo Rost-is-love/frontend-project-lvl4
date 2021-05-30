@@ -30,17 +30,15 @@ const Rename = () => {
         .required(),
     }),
     validateOnChange: false,
-    onSubmit: ({ body }, { setSubmitting, setErrors }) => {
-      setSubmitting(false);
+    onSubmit: async ({ body }, { setErrors }) => {
       const channel = {
         id: channelId,
         name: body,
       };
 
       try {
-        socket.renameChan(channel, () => {
-          dispatch(actions.hideModal());
-        });
+        await socket.renameChan(channel);
+        dispatch(actions.hideModal());
       } catch (error) {
         setErrors({ body: error.message });
       }
@@ -64,11 +62,11 @@ const Rename = () => {
               required
               ref={inputRef}
               onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
               value={formik.values.body}
               data-testid="rename-channel"
               name="body"
-              isInvalid={formik.errors.body}
+              aria-label="body"
+              isInvalid={!formik.isValid}
               disabled={formik.isSubmitting}
             />
             <Form.Control.Feedback type="invalid">{t(formik.errors.body)}</Form.Control.Feedback>

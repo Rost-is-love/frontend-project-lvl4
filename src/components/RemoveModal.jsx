@@ -10,6 +10,7 @@ const Remove = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [removingError, setRemovingError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(null);
   const channelId = useSelector(selectChannelId);
   const socket = useSocket();
 
@@ -17,12 +18,16 @@ const Remove = () => {
     dispatch(actions.hideModal());
   };
 
-  const removeChannel = (id) => () => {
+  const removeChannel = (id) => async () => {
     setRemovingError(null);
     try {
-      socket.removeChan({ id }, onHide);
+      setIsSubmitting(true);
+      await socket.removeChan({ id });
+      setIsSubmitting(false);
+      onHide();
     } catch (error) {
       setRemovingError(error.message);
+      setIsSubmitting(false);
     }
   };
 
@@ -36,10 +41,21 @@ const Remove = () => {
         {t('sure')}
         <div className="invalid-feedback d-block">{t(removingError)}</div>
         <div className="d-flex justify-content-between mt-2">
-          <Button type="button" variant="secondary" className="mr-2" onClick={onHide}>
+          <Button
+            type="button"
+            variant="secondary"
+            className="mr-2"
+            onClick={onHide}
+            disabled={isSubmitting}
+          >
             {t('cancel')}
           </Button>
-          <Button type="button" variant="danger" onClick={removeChannel(channelId)}>
+          <Button
+            type="button"
+            variant="danger"
+            onClick={removeChannel(channelId)}
+            disabled={isSubmitting}
+          >
             {t('remove')}
           </Button>
         </div>

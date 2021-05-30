@@ -56,7 +56,7 @@ const Messages = () => {
       body: yup.string().required(),
     }),
     validateOnChange: false,
-    onSubmit: ({ body }, { setSubmitting, resetForm, setErrors }) => {
+    onSubmit: async ({ body }, { setSubmitting, resetForm, setErrors }) => {
       const message = {
         username: nickname,
         body,
@@ -64,7 +64,7 @@ const Messages = () => {
       };
 
       try {
-        socket.sendMessage(message);
+        await socket.sendMessage(message);
         resetForm();
         inputRef.current.focus();
       } catch (error) {

@@ -1,83 +1,40 @@
 import React from 'react';
-import { noop } from 'lodash';
 
 import SocketContext from './contexts/socketContext.jsx';
 
 const SocketProvider = ({ children, socket }) => {
-  const withTimeout = (onSuccess, onTimeout, timeout, onHide) => {
+  // prettier-ignore
+  const wrapSocket = (socketFunc) => (...args) => new Promise((resolve, reject) => {
     // eslint-disable-next-line functional/no-let
     let called = false;
-
     const timer = setTimeout(() => {
       if (called) {
         return;
       }
       called = true;
-      onTimeout();
-    }, timeout);
+      reject(new Error('networkError'));
+    }, 1000);
 
-    return (...args) => {
+    socketFunc(...args, (response) => {
       if (called) {
-        onHide();
         return;
       }
       called = true;
-      onHide();
       clearTimeout(timer);
-      onSuccess(args);
-    };
-  };
-
-  const hadnleSocketEmit = (action, data, onHide) => {
-    socket.emit(
-      action,
-      data,
-      withTimeout(
-        () => {
-          console.log('success!');
-        },
-        () => {
-          console.log('timeout!');
-        },
-        1000,
-        onHide,
-      ),
-    );
-  };
-
-  const renameChan = (channel, onHide) => {
-    hadnleSocketEmit('renameChannel', channel, onHide);
-  };
-
-  const addChan = (channel, onHide) => {
-    hadnleSocketEmit('newChannel', channel, onHide);
-  };
-
-  const removeChan = (id, onHide) => {
-    hadnleSocketEmit('removeChannel', id, onHide);
-  };
-
-  const sendMessage = (message) => {
-    if (socket.disconnected) {
-      const sendingMessage = setInterval(() => {
-        socket.volatile.emit('newMessage', message, (response) => {
-          if (response.status === 'ok') {
-            clearInterval(sendingMessage);
-          }
-        });
-      }, 1000);
-    } else {
-      socket.emit('newMessage', message, noop);
-    }
-  };
+      if (response.status === 'ok') {
+        resolve();
+      }
+      reject();
+    });
+  });
 
   return (
     <SocketContext.Provider
       value={{
-        renameChan,
-        removeChan,
-        addChan,
-        sendMessage,
+        renameChan: wrapSocket((...args) => socket.emit('renameChannel', ...args)),
+        removeChan: wrapSocket((...args) => socket.emit('removeChannel', ...args)),
+        addChan: wrapSocket((...args) => socket.emit('newChannel', ...args)),
+        sendMessage: wrapSocket((...args) => socket.volatile.emit('newMessage', ...args)),
       }}
     >
       {children}

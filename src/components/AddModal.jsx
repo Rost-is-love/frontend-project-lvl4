@@ -27,16 +27,14 @@ const Add = () => {
         .required(),
     }),
     validateOnChange: false,
-    onSubmit: ({ body }, { setSubmitting, setErrors }) => {
-      setSubmitting(false);
+    onSubmit: async ({ body }, { setErrors }) => {
       const channel = {
         name: body,
       };
 
       try {
-        socket.addChan(channel, () => {
-          dispatch(actions.hideModal());
-        });
+        await socket.addChan(channel);
+        dispatch(actions.hideModal());
       } catch (error) {
         setErrors({ body: error.message });
       }
@@ -64,7 +62,7 @@ const Add = () => {
               value={formik.values.body}
               data-testid="add-channel"
               name="body"
-              isInvalid={formik.errors.body}
+              isInvalid={!formik.isValid}
               disabled={formik.isSubmitting}
             />
             <Form.Control.Feedback type="invalid">{t(formik.errors.body)}</Form.Control.Feedback>
