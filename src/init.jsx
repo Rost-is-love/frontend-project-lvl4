@@ -4,12 +4,12 @@ import * as yup from 'yup';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
+import SocketContext from './contexts/socketContext.jsx';
 import getLogger from '../lib/logger.js';
 
 import App from './components/App.jsx';
 import resources from './locales/ru.js';
 import reducer, { actions } from './slices';
-import SocketProvider from './SocketProvider.jsx';
 import yupDictionary from './locales/yup.js';
 
 export default async (socket) => {
@@ -40,13 +40,45 @@ export default async (socket) => {
     store.dispatch(actions.renameChannel(channel));
   });
 
+  // prettier-ignore
+  const wrapSocket = (socketFunc) => (...args) => new Promise((resolve, reject) => {
+    // eslint-disable-next-line functional/no-let
+    let called = false;
+    const timer = setTimeout(() => {
+      if (called) {
+        return;
+      }
+      called = true;
+      reject(new Error('networkError'));
+    }, 1000);
+
+    socketFunc(...args, (response) => {
+      if (called) {
+        return;
+      }
+      called = true;
+      clearTimeout(timer);
+      if (response.status === 'ok') {
+        resolve();
+      }
+      reject();
+    });
+  });
+
   return (
     <Provider store={store}>
-      <SocketProvider socket={socket}>
-        <I18nextProvider i18n={i18n}>
+      <I18nextProvider i18n={i18n}>
+        <SocketContext.Provider
+          value={{
+            renameChan: wrapSocket((...args) => socket.volatile.emit('renameChannel', ...args)),
+            removeChan: wrapSocket((...args) => socket.volatile.emit('removeChannel', ...args)),
+            addChan: wrapSocket((...args) => socket.volatile.emit('newChannel', ...args)),
+            sendMessage: wrapSocket((...args) => socket.volatile.emit('newMessage', ...args)),
+          }}
+        >
           <App />
-        </I18nextProvider>
-      </SocketProvider>
+        </SocketContext.Provider>
+      </I18nextProvider>
     </Provider>
   );
 };
