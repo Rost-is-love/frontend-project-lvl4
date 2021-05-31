@@ -19,18 +19,14 @@ const Add = () => {
   }, []);
   // prettier-ignore
   const formik = useFormik({
-    initialValues: {
-      body: '',
-    },
+    initialValues: { body: '' },
     validationSchema: yup.object().shape({
       body: yup.string().notOneOf(channelsNames).min(3).max(20)
         .required(),
     }),
     validateOnChange: false,
     onSubmit: async ({ body }, { setErrors }) => {
-      const channel = {
-        name: body,
-      };
+      const channel = { name: body };
 
       try {
         await socket.addChan(channel);

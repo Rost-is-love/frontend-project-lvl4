@@ -22,9 +22,7 @@ const Rename = () => {
   }, []);
   // prettier-ignore
   const formik = useFormik({
-    initialValues: {
-      body: name,
-    },
+    initialValues: { body: name },
     validationSchema: yup.object().shape({
       body: yup.string().notOneOf(channelsNames).min(3).max(20)
         .required(),

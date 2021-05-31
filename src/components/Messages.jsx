@@ -49,9 +49,7 @@ const Messages = () => {
   });
 
   const formik = useFormik({
-    initialValues: {
-      body: '',
-    },
+    initialValues: { body: '' },
     validationSchema: yup.object().shape({
       body: yup.string().required(),
     }),
