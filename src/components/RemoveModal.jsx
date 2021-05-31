@@ -18,11 +18,11 @@ const Remove = () => {
     dispatch(actions.hideModal());
   };
 
-  const removeChannel = (id) => async () => {
+  const removeChannel = () => async () => {
     setRemovingError(null);
     try {
       setIsSubmitting(true);
-      await socket.removeChan({ id });
+      await socket.removeChan({ id: channelId });
       setIsSubmitting(false);
       onHide();
     } catch (error) {
@@ -50,12 +50,7 @@ const Remove = () => {
           >
             {t('cancel')}
           </Button>
-          <Button
-            type="button"
-            variant="danger"
-            onClick={removeChannel(channelId)}
-            disabled={isSubmitting}
-          >
+          <Button type="button" variant="danger" onClick={removeChannel()} disabled={isSubmitting}>
             {t('remove')}
           </Button>
         </div>
