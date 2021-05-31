@@ -7,21 +7,22 @@ import routes from '../routes.js';
 import useAuth from '../hooks/useAuth.jsx';
 import { actions } from '../slices';
 
-const getAuthHeader = (token) => {
-  if (token) {
-    return { Authorization: `Bearer ${token}` };
-  }
-
-  return {};
-};
-
 const ChatPage = () => {
   const auth = useAuth();
-  const token = auth.getToken();
+  const getAuthHeader = () => {
+    const token = auth.getToken();
+
+    if (token) {
+      return { Authorization: `Bearer ${token}` };
+    }
+
+    return {};
+  };
+
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchContent = async () => {
-      const response = await axios.get(routes.usersPath(), { headers: getAuthHeader(token) });
+      const response = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
       const { data } = response;
 
       dispatch(actions.initChannels({ data }));
