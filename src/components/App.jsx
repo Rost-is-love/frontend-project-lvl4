@@ -72,16 +72,20 @@ const AuthButton = () => {
   return auth.loggedIn ? <Button onClick={auth.logOut}>{t('logout')}</Button> : null;
 };
 
+const Header = () => (
+  <Navbar bg="light" expand="lg" className="mb-3">
+    <Navbar.Brand as={Link} to="/" className="mr-auto">
+      Hexlet Chat
+    </Navbar.Brand>
+    <AuthButton />
+  </Navbar>
+);
+
 const App = () => (
   <AuthProvider>
     <div className="d-flex flex-column h-100">
       <Router>
-        <Navbar bg="light" expand="lg" className="mb-3">
-          <Navbar.Brand as={Link} to="/" className="mr-auto">
-            Hexlet Chat
-          </Navbar.Brand>
-          <AuthButton />
-        </Navbar>
+        <Header />
         <Switch>
           <Route path="/login">
             <AuthorizationForm />
