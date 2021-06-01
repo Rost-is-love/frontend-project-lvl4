@@ -21,7 +21,15 @@ import useAuth from '../hooks/useAuth.jsx';
 
 const AuthProvider = ({ children }) => {
   const getUsername = () => localStorage.getItem('username');
-  const getToken = () => localStorage.getItem('token');
+  const getAuthHeader = () => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      return { Authorization: `Bearer ${token}` };
+    }
+
+    return {};
+  };
   const isLoggedIn = has(localStorage, 'token');
   const [loggedIn, setLoggedIn] = useState(isLoggedIn);
 
@@ -41,7 +49,7 @@ const AuthProvider = ({ children }) => {
     <authContext.Provider
       value={{
         getUsername,
-        getToken,
+        getAuthHeader,
         loggedIn,
         logIn,
         logOut,

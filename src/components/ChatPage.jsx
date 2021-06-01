@@ -9,20 +9,11 @@ import { actions } from '../slices';
 
 const ChatPage = () => {
   const auth = useAuth();
-  const getAuthHeader = () => {
-    const token = auth.getToken();
-
-    if (token) {
-      return { Authorization: `Bearer ${token}` };
-    }
-
-    return {};
-  };
 
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchContent = async () => {
-      const response = await axios.get(routes.usersPath(), { headers: getAuthHeader() });
+      const response = await axios.get(routes.usersPath(), { headers: auth.getAuthHeader() });
       const { data } = response;
 
       dispatch(actions.initChannels({ data }));
