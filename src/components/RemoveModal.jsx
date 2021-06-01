@@ -18,7 +18,7 @@ const Remove = () => {
     dispatch(actions.hideModal());
   };
 
-  const removeChannel = () => async () => {
+  const removeChannel = async () => {
     setRemovingError(null);
     try {
       setIsSubmitting(true);
@@ -50,7 +50,7 @@ const Remove = () => {
           >
             {t('cancel')}
           </Button>
-          <Button type="button" variant="danger" onClick={removeChannel()} disabled={isSubmitting}>
+          <Button type="button" variant="danger" onClick={removeChannel} disabled={isSubmitting}>
             {t('remove')}
           </Button>
         </div>
