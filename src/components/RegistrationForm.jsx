@@ -45,15 +45,17 @@ const RegistrationForm = () => {
         history.replace(from);
       } catch (error) {
         if (error.isAxiosError) {
-          if (error.response.status === 409) {
-            setIsValidData(false);
-            inputRef.current.select();
-          } else {
+          if (!error.response) {
             setErrors({ username: ' ', password: ' ', confirmPassword: 'networkError' });
             return;
           }
+          if (error.response.status === 409) {
+            setIsValidData(false);
+            inputRef.current.select();
+          }
+        } else {
+          throw error;
         }
-        throw error;
       }
     },
   });
