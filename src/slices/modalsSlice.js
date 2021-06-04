@@ -17,7 +17,7 @@ export default createSlice({
     hideModal: (state) => {
       state.type = null;
       state.isVisible = false;
-      state.hannelId = null;
+      state.сhannelId = null;
     },
   },
 });
