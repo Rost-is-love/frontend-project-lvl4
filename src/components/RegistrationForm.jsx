@@ -44,14 +44,14 @@ const RegistrationForm = () => {
         const { from } = location.state || { from: { pathname: '/' } };
         history.replace(from);
       } catch (error) {
-        if (error.message.includes('Network Error')) {
-          setErrors({ username: ' ', password: ' ', confirmPassword: 'networkError' });
-          return;
-        }
-        if (error.response.status === 409) {
-          setIsValidData(false);
-          inputRef.current.select();
-          return;
+        if (error.isAxiosError) {
+          if (error.response.status === 409) {
+            setIsValidData(false);
+            inputRef.current.select();
+          } else {
+            setErrors({ username: ' ', password: ' ', confirmPassword: 'networkError' });
+            return;
+          }
         }
         throw error;
       }
