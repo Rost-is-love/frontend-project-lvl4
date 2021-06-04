@@ -70,9 +70,9 @@ export default async (socket) => {
       <I18nextProvider i18n={i18n}>
         <SocketContext.Provider
           value={{
-            renameChan: wrapSocket((...args) => socket.volatile.emit('renameChannel', ...args)),
-            removeChan: wrapSocket((...args) => socket.volatile.emit('removeChannel', ...args)),
-            addChan: wrapSocket((...args) => socket.volatile.emit('newChannel', ...args)),
+            renameChannel: wrapSocket((...args) => socket.volatile.emit('renameChannel', ...args)),
+            removeChannel: wrapSocket((...args) => socket.volatile.emit('removeChannel', ...args)),
+            addChannel: wrapSocket((...args) => socket.volatile.emit('newChannel', ...args)),
             sendMessage: wrapSocket((...args) => socket.volatile.emit('newMessage', ...args)),
           }}
         >

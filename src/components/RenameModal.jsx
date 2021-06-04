@@ -35,7 +35,7 @@ const Rename = () => {
       };
 
       try {
-        await socket.renameChan(channel);
+        await socket.renameChannel(channel);
         dispatch(actions.hideModal());
       } catch (error) {
         setErrors({ body: error.message });

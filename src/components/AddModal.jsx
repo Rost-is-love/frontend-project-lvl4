@@ -29,7 +29,7 @@ const Add = () => {
       const channel = { name: body };
 
       try {
-        await socket.addChan(channel);
+        await socket.addChannel(channel);
         dispatch(actions.hideModal());
       } catch (error) {
         setErrors({ body: error.message });

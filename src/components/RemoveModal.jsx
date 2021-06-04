@@ -22,7 +22,7 @@ const Remove = () => {
     setRemovingError(null);
     try {
       setIsSubmitting(true);
-      await socket.removeChan({ id: channelId });
+      await socket.removeChannel({ id: channelId });
       setIsSubmitting(false);
       onHide();
     } catch (error) {
