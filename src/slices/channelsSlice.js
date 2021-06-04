@@ -1,11 +1,14 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
+
+const DEFAULT_ID = 1;
+
 // prettier-ignore
 export default createSlice({
   name: 'channelsData',
   initialState: {
     channels: [],
-    currentChannelId: 1,
+    currentChannelId: DEFAULT_ID,
   },
   reducers: {
     initChannels: (state, { payload: { data } }) => {
@@ -19,7 +22,7 @@ export default createSlice({
     },
     removeChannel: (state, { payload: { id } }) => {
       state.channels = state.channels.filter((channel) => channel.id !== id);
-      state.currentChannelId = 1;
+      state.currentChannelId = DEFAULT_ID;
     },
     renameChannel: (state, { payload: { id, name } }) => {
       state.channels = state.channels
