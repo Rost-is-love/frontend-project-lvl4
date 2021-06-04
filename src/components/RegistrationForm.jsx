@@ -52,7 +52,9 @@ const RegistrationForm = () => {
           if (error.response.status === 409) {
             setIsValidData(false);
             inputRef.current.select();
+            return;
           }
+          throw error;
         } else {
           throw error;
         }
