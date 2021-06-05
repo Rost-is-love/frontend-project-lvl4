@@ -25,8 +25,8 @@ export default createSlice({
       state.currentChannelId = DEFAULT_ID;
     },
     renameChannel: (state, { payload: { id, name } }) => {
-      const cureentChannel = state.channels.find((channel) => channel.id === id);
-      cureentChannel.name = name;
+      const currentChannel = state.channels.find((channel) => channel.id === id);
+      currentChannel.name = name;
     },
     changeCurrentChannel: (state, { payload: { id } }) => {
       state.currentChannelId = id;
