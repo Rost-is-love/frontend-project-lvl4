@@ -15,7 +15,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Rost-is-love/frontend-project-lvl4"
+    "url": "https://github.com/Rost-is-love/frontend-project-lvl4",
+    "postinstall": "npm rebuild grpc --target=10.15.0 --target_arch=x64 --target_platform=linux --target_libc=glibc"
   },
   "author": "Rostislav Antonov",
   "license": "ISC",
