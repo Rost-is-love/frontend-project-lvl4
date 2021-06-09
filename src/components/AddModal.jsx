@@ -21,19 +21,17 @@ const Add = () => {
   const formik = useFormik({
     initialValues: { body: '' },
     validationSchema: yup.object().shape({
-      body: yup.string().notOneOf(channelsNames).min(3).max(50)
+      body: yup.string().notOneOf(channelsNames).min(3).max(20)
         .required(),
     }),
     validateOnChange: false,
     onSubmit: async ({ body }, { setErrors }) => {
       const channel = { name: body };
 
-      try
-      {
+      try {
         await socket.addChannel(channel);
         dispatch(actions.hideModal());
-      } catch (error)
-      {
+      } catch (error) {
         setErrors({ body: error.message });
       }
     },
